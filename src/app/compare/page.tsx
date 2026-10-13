@@ -7,11 +7,11 @@ export const metadata: Metadata = { title: "Compare scenarios" };
 export default function ComparePage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 md:px-8">
-      <h1 className="text-3xl md:text-[40px]">Compare scenarios</h1>
+      <h1>Compare scenarios</h1>
       <p className="mt-2 max-w-2xl text-muted">
-        See conservative, base and optimistic assumptions side by side, with the assumptions behind each result. All scenarios are hypothetical.
+        See a cautious, a base and an optimistic version of your assumptions side by side. The base case is exactly what you set in the simulator. All results are hypothetical.
       </p>
-      <Suspense fallback={<p className="mt-8 text-sm text-muted">Loading comparison…</p>}>
+      <Suspense fallback={<p role="status" className="mt-8 text-sm text-muted">Loading the comparison…</p>}>
         <CompareWorkspace />
       </Suspense>
     </div>

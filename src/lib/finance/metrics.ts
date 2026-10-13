@@ -3,7 +3,7 @@ import { toRealValue } from "./inflation";
 
 /** Division that returns 0 instead of NaN/Infinity when the denominator is 0. */
 export function safeDivide(numerator: number, denominator: number): number {
-  return denominator === 0 ? 0 : numerator / denominator;
+  return denominator === 0 || !Number.isFinite(denominator) ? 0 : numerator / denominator;
 }
 
 export function summarize(
@@ -16,6 +16,8 @@ export function summarize(
   return {
     firstYear: rows[1],
     final,
+    initialOwnership: rows[0].ownershipShare,
+    endingOwnership: final.ownershipShare,
     averageCashOnCash: safeDivide(
       years.reduce((sum, r) => sum + r.cashOnCashReturn, 0),
       years.length,

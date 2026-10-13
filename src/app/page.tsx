@@ -11,12 +11,12 @@ export default function HomePage({ searchParams }: { searchParams: Promise<Searc
     <>
       <Hero />
       <section id="properties" aria-labelledby="featured-heading" className="mx-auto max-w-7xl scroll-mt-4 px-4 py-14 md:px-8">
-        <h2 id="featured-heading" className="text-3xl">Featured Properties</h2>
+        <h2 id="featured-heading">Sample properties to explore</h2>
         <p className="mt-2 max-w-2xl text-muted">
-          Explore illustrative properties in Dubai and compare their modelled outcomes. Values and yields are mock data and none of these properties are available to buy.
+          Six invented properties with made up numbers, so you can see how the model behaves. None of them are real listings, and none are for sale.
         </p>
         <div className="mt-8">
-          <Suspense fallback={<div role="status" aria-busy="true" className="h-[640px] rounded-xl bg-white/70"><span className="sr-only">Loading properties</span></div>}>
+          <Suspense fallback={<div role="status" aria-busy="true" className="h-[640px] rounded-xl bg-white/70"><span className="sr-only">Loading the properties</span></div>}>
             <FeaturedGrid searchParams={searchParams} />
           </Suspense>
         </div>

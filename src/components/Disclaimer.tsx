@@ -1,17 +1,17 @@
 import Image from "next/image";
+import { ILLUSTRATIVE_NOTE } from "@/lib/finance/definitions";
 
-export const DISCLAIMER_TEXT =
-  "All properties, assumptions, and projections are illustrative. Modelled results are hypothetical and are not guarantees of investment performance. Actual returns may differ due to vacancy, expenses, taxes, fees, market movements, financing, and liquidity constraints. This simulator does not constitute investment, legal, or tax advice.";
+export const DISCLAIMER_TEXT = ILLUSTRATIVE_NOTE;
 
 export function Disclaimer() {
   return (
-    <footer aria-label="Investment disclaimer" className="bg-midnight text-white/85">
+    <footer aria-label="Disclaimer" className="bg-midnight text-white/85 print:hidden">
       <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 md:grid-cols-[auto_1fr] md:gap-12 md:px-8">
         <Image src="/images/branding/esta-logo-light.png" alt="ESTA Simulator" width={129} height={40} className="h-10 w-auto" />
-        <div className="max-w-3xl text-xs leading-relaxed">
+        <div className="max-w-3xl text-sm leading-relaxed">
           <p>{DISCLAIMER_TEXT}</p>
           <p className="mt-2">
-            Projected capital appreciation is not realized profit until an asset is sold, and property value is not the same as immediately available cash.
+            A property&apos;s value is not cash you can spend, and a rise in value is not profit until the property is sold. Actual results depend on vacancies, costs, taxes, fees, financing and the market, none of which are fully modelled here.
           </p>
         </div>
       </div>

@@ -2,16 +2,16 @@
 export const BOUNDS = {
   inflation: { min: 0, max: 0.1, step: 0.001 },
   occupancy: { min: 0, max: 1, step: 0.01 },
-  maintenance: { min: 0, max: 10_000, step: 100 },
+  maintenance: { min: 0, max: 3_000, step: 25 },
   grossYield: { min: 0, max: 0.12, step: 0.001 },
   appreciation: { min: -0.05, max: 0.1, step: 0.001 },
   opexRatio: { min: 0, max: 0.6, step: 0.01 },
   saleCostRate: { min: 0, max: 0.06, step: 0.005 },
 } as const;
 
-export const INVESTMENT_STEP = 500;
-export const INVESTMENT_MAX = 100_000;
-export const DEFAULT_INVESTMENT = 10_000;
+export const INVESTMENT_STEP = 100;
+export const INVESTMENT_MAX = 25_000;
+export const DEFAULT_INVESTMENT = 2_500;
 export const DEFAULT_SALE_COST_RATE = 0.02;
 
 export function investmentBounds(propertyValue: number, minInvestment: number) {

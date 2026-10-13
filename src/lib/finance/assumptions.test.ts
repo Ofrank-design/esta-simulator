@@ -19,7 +19,7 @@ describe("scenario presets", () => {
     expect(c.grossYield).toBeCloseTo(0.055, 10);
     expect(c.appreciation).toBeCloseTo(0.01, 10);
     expect(c.inflation).toBeCloseTo(0.035, 10);
-    expect(c.maintenance).toBe(1_700);
+    expect(c.maintenance).toBe(475);
     expect(SCENARIO_DELTAS.conservative.occupancy).toBe(-0.08);
   });
 
@@ -45,7 +45,20 @@ describe("scenario presets", () => {
   });
 });
 
-import { compareScenarios } from "./assumptions";
+import { compareScenarios, scenarioFrom } from "./assumptions";
+
+describe("scenarioFrom (relative to current assumptions)", () => {
+  it("shifts the current values by the stated deltas and clamps to the slider ranges", () => {
+    const d = { ...defaultAssumptions(PROPERTIES[0]), occupancy: 0.7, maintenance: 50 };
+    const c = scenarioFrom(d, "conservative");
+    expect(c.occupancy).toBeCloseTo(0.62, 10);
+    expect(c.maintenance).toBe(200);
+    const o = scenarioFrom({ ...d, occupancy: 0.99, maintenance: 25 }, "optimistic");
+    expect(o.occupancy).toBe(1);
+    expect(o.maintenance).toBe(0);
+    expect(scenarioFrom(d, "base")).toEqual(d);
+  });
+});
 
 describe("compareScenarios", () => {
   it("returns the three presets in order, each with its own assumptions and result", () => {

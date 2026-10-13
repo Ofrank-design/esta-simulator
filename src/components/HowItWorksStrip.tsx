@@ -1,10 +1,10 @@
 import { Calculator, Layers, SlidersHorizontal, ShieldCheck } from "lucide-react";
 
 const STEPS = [
-  { icon: SlidersHorizontal, title: "Adjust Your Investment", text: "Use interactive sliders to fine-tune the assumptions." },
-  { icon: Calculator, title: "See 10-Year Projections", text: "Track cash flow, appreciation and ROI as you change inputs." },
-  { icon: Layers, title: "Compare Scenarios", text: "See conservative, base and optimistic cases side by side." },
-  { icon: ShieldCheck, title: "Understand the Assumptions", text: "See exactly what drives each result, and what it leaves out." },
+  { icon: SlidersHorizontal, title: "Pick a property", text: "Start with a sample property and its starting assumptions." },
+  { icon: Calculator, title: "Change the assumptions", text: "Move the sliders for occupancy, costs, inflation and growth. The projection updates as you go." },
+  { icon: Layers, title: "Compare outcomes", text: "Put a cautious, a base and an optimistic version side by side." },
+  { icon: ShieldCheck, title: "Keep a copy", text: "Download a report or CSV, or copy a link to the exact scenario." },
 ];
 
 export function HowItWorksStrip() {
@@ -19,7 +19,7 @@ export function HowItWorksStrip() {
             </span>
             <span>
               <span className="block text-sm font-bold text-midnight">{title}</span>
-              <span className="mt-1 block text-xs leading-relaxed text-muted">{text}</span>
+              <span className="mt-1 block text-sm leading-relaxed text-muted">{text}</span>
             </span>
           </li>
         ))}

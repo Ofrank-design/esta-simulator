@@ -27,12 +27,12 @@ export interface Assumptions {
 }
 
 export function defaultAssumptions(property: Property): Assumptions {
-  const inv = investmentBounds(property.propertyValueAed, property.minInvestmentAed);
+  const inv = investmentBounds(property.propertyValueUsd, property.minInvestmentUsd);
   return {
     investment: clamp(DEFAULT_INVESTMENT, inv.min, inv.max),
     inflation: DEFAULT_INFLATION,
     occupancy: property.occupancy,
-    maintenance: property.annualMaintenanceAed,
+    maintenance: property.annualMaintenanceUsd,
     grossYield: property.grossYield,
     appreciation: property.appreciation,
     opexRatio: property.opexRatio,
@@ -45,7 +45,7 @@ export function defaultAssumptions(property: Property): Assumptions {
 export function toProjectionInputs(property: Property, a: Assumptions, years = 10): ProjectionInputs {
   return {
     years,
-    propertyValue: property.propertyValueAed,
+    propertyValue: property.propertyValueUsd,
     investment: a.investment,
     grossYield: a.grossYield,
     occupancy: a.occupancy,
@@ -64,13 +64,13 @@ export type ScenarioKind = "conservative" | "base" | "optimistic";
 type ScenarioKey = "grossYield" | "occupancy" | "opexRatio" | "appreciation" | "inflation" | "maintenance";
 
 /**
- * Explicit, additive changes to each assumption (rates in decimal points, maintenance in AED).
+ * Explicit, additive changes to each assumption (rates in decimal points, maintenance in USD per year).
  * Shown to the user as-is. Results are clamped to slider bounds. No hidden multipliers.
  */
 export const SCENARIO_DELTAS: Record<ScenarioKind, Record<ScenarioKey, number>> = {
-  conservative: { grossYield: -0.01, occupancy: -0.08, opexRatio: 0.05, appreciation: -0.02, inflation: 0.01, maintenance: 500 },
+  conservative: { grossYield: -0.01, occupancy: -0.08, opexRatio: 0.05, appreciation: -0.02, inflation: 0.01, maintenance: 150 },
   base: { grossYield: 0, occupancy: 0, opexRatio: 0, appreciation: 0, inflation: 0, maintenance: 0 },
-  optimistic: { grossYield: 0.005, occupancy: 0.04, opexRatio: -0.03, appreciation: 0.015, inflation: -0.005, maintenance: -300 },
+  optimistic: { grossYield: 0.005, occupancy: 0.04, opexRatio: -0.03, appreciation: 0.015, inflation: -0.005, maintenance: -75 },
 };
 
 export const SCENARIO_LABELS: Record<ScenarioKind, string> = {
@@ -109,10 +109,29 @@ export interface ScenarioOutcome {
   result: ProjectionResult;
 }
 
-/** Runs all three presets for a property, keeping the user's investment, sale costs and modes. */
+/**
+ * Shifts the user's CURRENT assumptions by the stated amounts (clamped to slider bounds).
+ * The base case is exactly the current assumptions. Used by the comparison page, so a customised
+ * scenario stays the centre of the comparison. (applyScenario, above, starts from property defaults.)
+ */
+export function scenarioFrom(current: Assumptions, kind: ScenarioKind): Assumptions {
+  const d = SCENARIO_DELTAS[kind];
+  const set = (key: ScenarioKey) => cleanNumber(clamp(current[key] + d[key], BOUNDS[key].min, BOUNDS[key].max));
+  return {
+    ...current,
+    grossYield: set("grossYield"),
+    occupancy: set("occupancy"),
+    opexRatio: set("opexRatio"),
+    appreciation: set("appreciation"),
+    inflation: set("inflation"),
+    maintenance: set("maintenance"),
+  };
+}
+
+/** Runs all three scenarios relative to the user's current assumptions. */
 export function compareScenarios(property: Property, current: Assumptions): ScenarioOutcome[] {
   return SCENARIO_KEYS.map((kind) => {
-    const assumptions = applyScenario(property, current, kind);
+    const assumptions = kind === "base" ? current : scenarioFrom(current, kind);
     return {
       kind,
       label: SCENARIO_LABELS[kind],

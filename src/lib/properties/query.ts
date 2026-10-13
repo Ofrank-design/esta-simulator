@@ -21,9 +21,9 @@ export function filterAndSort(
   const filtered = type === "all" ? [...properties] : properties.filter((p) => p.assetType === type);
   switch (sort) {
     case "value-desc":
-      return filtered.sort((a, b) => b.propertyValueAed - a.propertyValueAed);
+      return filtered.sort((a, b) => b.propertyValueUsd - a.propertyValueUsd);
     case "value-asc":
-      return filtered.sort((a, b) => a.propertyValueAed - b.propertyValueAed);
+      return filtered.sort((a, b) => a.propertyValueUsd - b.propertyValueUsd);
     case "yield-desc":
       return filtered.sort((a, b) => b.grossYield - a.grossYield);
     case "yield-asc":

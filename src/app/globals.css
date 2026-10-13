@@ -27,7 +27,7 @@
   --color-muted: var(--text-muted);
   --color-line: var(--border);
   --font-heading: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
 }
 
 html {
@@ -39,17 +39,47 @@ html {
 body {
   font-family: var(--font-sans);
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
+/*
+ * Type scale (one system for every route):
+ *   display  hero headline only          clamp 2.25rem to 3.75rem, Plus Jakarta Sans 800
+ *   h1       page titles                 clamp 1.875rem to 2.5rem,  Plus Jakarta Sans 800
+ *   h2       section headings            clamp 1.5rem to 1.875rem,  Plus Jakarta Sans 700
+ *   h3       card and panel headings     1.25rem,                   Plus Jakarta Sans 700
+ *   body     Inter 1rem / 1.65. Small 0.875rem, caption 0.75rem (the minimum for essential text)
+ * Money and percentages use Inter with tabular numerals (.num) so columns line up as sliders move.
+ */
 @layer base {
   h1, h2, h3, h4 {
     font-family: var(--font-heading);
-    font-weight: 800;
-    letter-spacing: -0.015em;
     color: var(--midnight);
+    text-wrap: balance;
   }
+  h1 { font-size: clamp(1.875rem, 1.4rem + 1.8vw, 2.5rem); line-height: 1.15; font-weight: 800; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(1.5rem, 1.2rem + 1vw, 1.875rem); line-height: 1.2; font-weight: 700; letter-spacing: -0.015em; }
+  h3 { font-size: 1.25rem; line-height: 1.3; font-weight: 700; letter-spacing: -0.01em; }
+  h4 { font-size: 1rem; line-height: 1.4; font-weight: 700; }
+  p { text-wrap: pretty; }
+}
+
+@utility text-display {
+  font-family: var(--font-heading);
+  font-size: clamp(2.25rem, 1.5rem + 3.2vw, 3.75rem);
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+@utility text-h3 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 /* Financial values use tabular numerals */

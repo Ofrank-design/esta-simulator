@@ -4,7 +4,7 @@ import { NavLinks } from "./NavLinks";
 
 export function SiteHeader() {
   return (
-    <header className="border-b border-line bg-white">
+    <header className="border-b border-line bg-white print:hidden">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-8 gap-y-1 px-4 pt-3 md:flex-nowrap md:px-8 md:py-3">
         <Link href="/" className="order-1 shrink-0">
           <Image

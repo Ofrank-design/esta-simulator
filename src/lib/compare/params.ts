@@ -1,35 +1,29 @@
 import { PROPERTIES, getPropertyById } from "@/lib/data/properties";
-import { clamp, investmentBounds } from "@/lib/finance/bounds";
-import { defaultAssumptions } from "@/lib/finance/assumptions";
-import { DISTRIBUTION_MODES, type DistributionMode } from "@/lib/finance/validation";
+import type { Property } from "@/types/property";
+import type { Assumptions } from "@/lib/finance/assumptions";
+import { encodeAssumptions, parseAssumptionsDetailed } from "@/lib/simulator/params";
+import type { ParamGetter } from "@/lib/url";
 
 export interface CompareParams {
   propertyId: string;
-  investment: number;
-  distributionMode: DistributionMode;
+  /** The user's full, validated assumption set. Conservative and optimistic shift it; base IS it. */
+  assumptions: Assumptions;
+  notices: string[];
 }
 
-/** URL values are untrusted: anything invalid falls back to a safe default, numbers are clamped. */
-export function parseCompareParams(get: (key: string) => string | null): CompareParams {
-  const property = getPropertyById(get("property") ?? "") ?? PROPERTIES[0];
-  const bounds = investmentBounds(property.propertyValueAed, property.minInvestmentAed);
-  const fallback = defaultAssumptions(property).investment;
-
-  const raw = get("investment");
-  const parsed = raw !== null && raw.trim() !== "" ? Number(raw) : Number.NaN;
-  const investment = Number.isFinite(parsed) ? clamp(Math.round(parsed), bounds.min, bounds.max) : fallback;
-
-  const mode = get("distributions");
-  const distributionMode = DISTRIBUTION_MODES.find((m) => m === mode) ?? "payout";
-
-  return { propertyId: property.id, investment, distributionMode };
+/** Compare links use the same format as simulator links, plus ?property=. Untrusted input, never throws. */
+export function parseCompareParams(get: ParamGetter): CompareParams {
+  const requested = get("property");
+  const found = getPropertyById(requested ?? "");
+  const property = found ?? PROPERTIES[0];
+  const { assumptions, notices } = parseAssumptionsDetailed(get, property);
+  if (requested && requested.trim() !== "" && !found) {
+    notices.unshift(`We couldn't find a property called "${requested.slice(0, 40)}", so we're showing ${property.name}.`);
+  }
+  return { propertyId: property.id, assumptions, notices };
 }
 
-export function buildCompareHref(p: CompareParams): string {
-  const q = new URLSearchParams({
-    property: p.propertyId,
-    investment: String(p.investment),
-    distributions: p.distributionMode,
-  });
-  return `/compare?${q.toString()}`;
+export function buildCompareHref(property: Property, assumptions: Assumptions): string {
+  const q = encodeAssumptions(assumptions, property);
+  return `/compare?property=${property.id}${q ? `&${q}` : ""}`;
 }

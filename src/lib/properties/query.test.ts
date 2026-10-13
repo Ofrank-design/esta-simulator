@@ -16,9 +16,9 @@ describe("filterAndSort", () => {
   });
 
   it("sorts by value descending and ascending", () => {
-    const desc = filterAndSort(PROPERTIES, "all", "value-desc").map((p) => p.propertyValueAed);
-    expect(desc).toEqual([5_600_000, 4_500_000, 3_900_000, 3_200_000, 2_400_000, 1_800_000]);
-    const asc = filterAndSort(PROPERTIES, "all", "value-asc").map((p) => p.propertyValueAed);
+    const desc = filterAndSort(PROPERTIES, "all", "value-desc").map((p) => p.propertyValueUsd);
+    expect(desc).toEqual([1_525_000, 1_225_000, 1_060_000, 870_000, 650_000, 490_000]);
+    const asc = filterAndSort(PROPERTIES, "all", "value-asc").map((p) => p.propertyValueUsd);
     expect(asc).toEqual([...desc].reverse());
   });
 

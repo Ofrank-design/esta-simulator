@@ -21,3 +21,9 @@ export function parseFinite(raw: string | null | undefined): number | null {
   const n = Number(raw);
   return Number.isFinite(n) ? n : null;
 }
+
+/** Client only. The full address of the current page with the given query, for "copy link". */
+export function currentScenarioUrl(query: string): string {
+  const { origin, pathname } = window.location;
+  return `${origin}${pathname}${query ? `?${query}` : ""}`;
+}

@@ -20,6 +20,9 @@ describe("chart and table consistency", () => {
           expect(c.capitalAppreciation).toBe(t.capitalAppreciation);
           expect(c.cumulativeCashDistributions).toBe(t.cumulativeCashDistributions);
           expect(c.cumulativeReinvested).toBe(t.cumulativeReinvested);
+          expect(c.cumulativeCapitalCalls).toBe(rows[i].cumulativeCapitalCalls);
+          expect(t.capitalCall).toBe(rows[i].capitalCall);
+          expect(t.ownershipShare).toBe(rows[i].ownershipShare);
           expect(c.totalProfit).toBe(t.totalProfit);
           expect(c.totalRoi).toBe(t.totalRoi);
           expect(c.totalProfit).toBe(rows[i].totalProfit);
@@ -33,6 +36,8 @@ describe("chart and table consistency", () => {
     const { rows } = projectInvestment(toProjectionInputs(p, defaultAssumptions(p)));
     const text = describeProjection(rows, "payout");
     expect(text).toContain("year 10");
-    expect(text).toContain("cumulative cash distributions");
+    expect(text).toContain("paid to you in cash");
+    expect(text).toMatch(/\$/);
+    expect(text).not.toContain("AED");
   });
 });

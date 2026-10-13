@@ -9,40 +9,59 @@ export interface ProjectionRow {
   collectedRent: number;
   operatingExpenses: number;
   maintenance: number;
-  /** Property-level net operating cash flow (before the investor's share). */
+  /** Whole-property net operating cash flow. Can be negative. */
   netCashFlow: number;
-  /** Investor's ownership share at the END of the year. */
+  /** Investor's ownership share at the END of the year. Always within 0..1. */
   ownershipShare: number;
-  /** Investor's share of net cash flow, earned this year (negative = share of a shortfall). */
+
+  /** Investor's share of POSITIVE property cash flow this year (never negative). */
   distributionEarned: number;
-  /** Portion of distributionEarned paid out as cash (payout mode). */
+  /** Part of distributionEarned paid out as cash. In reinvest mode this is only the excess at the ownership cap. */
   cashDistribution: number;
-  /** Portion of distributionEarned used to buy more units (reinvest mode). */
+  /** Part of distributionEarned used to buy more of the property. */
   reinvestedDistribution: number;
+  /** Cash paid out only because ownership hit 100% (reinvest mode). Included in cashDistribution. */
+  excessCashDistribution: number;
+  /** Investor's share of NEGATIVE property cash flow, treated as new money they contribute. */
+  capitalCall: number;
+
   cumulativeDistributionsEarned: number;
   cumulativeCashDistributions: number;
   cumulativeReinvested: number;
+  cumulativeCapitalCalls: number;
+  /** Initial investment + cumulative capital calls (new external money only). */
+  totalContributedCapital: number;
+
   /** Ownership share x property value. */
   holdingValue: number;
-  /** Initial investment + reinvested distributions. */
+  /** Initial investment + reinvested distributions (what bought the units). Capital calls buy no units. */
   costBasis: number;
   /** holdingValue - costBasis. Unrealized until sale. */
   capitalAppreciation: number;
-  /** holdingValue + cumulative cash distributions (before sale costs). */
+  /** holdingValue + cumulative cash distributions (before sale costs and before contributions). */
   totalEconomicValue: number;
-  /** totalEconomicValue - initial investment. */
+  /** Sale costs if the holding were sold at the end of this year. 0 in year 0. */
+  saleCosts: number;
+  /** holdingValue - saleCosts */
+  netSaleProceeds: number;
+  /** netSaleProceeds + cumulative cash distributions - total contributed capital. */
   totalProfit: number;
-  /** distributionEarned / initial investment. 0 for year 0. */
+  /** totalProfit / totalContributedCapital. 0 in year 0. */
+  totalRoi: number;
+
+  /** cashDistribution / contributed capital at the start of the year. */
   cashOnCashReturn: number;
+  /** distributionEarned / contributed capital at the start of the year (cash or reinvested). */
+  distributionYield: number;
   /** totalEconomicValue deflated to today's purchasing power. */
   realTotalEconomicValue: number;
-  /** ROI if the holding were sold at the end of this year, after sale costs. */
-  totalRoi: number;
 }
 
 export interface ProjectionSummary {
   firstYear: ProjectionRow;
   final: ProjectionRow;
+  initialOwnership: number;
+  endingOwnership: number;
   /** Mean of annual cash-on-cash returns across years 1..N. */
   averageCashOnCash: number;
   /** Initial investment expressed in today's purchasing power after N years of inflation. */

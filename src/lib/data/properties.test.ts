@@ -21,12 +21,23 @@ describe("mock property dataset", () => {
   });
 
   it("keeps minimum investment below property value", () => {
-    for (const p of PROPERTIES) expect(p.minInvestmentAed).toBeLessThan(p.propertyValueAed);
+    for (const p of PROPERTIES) expect(p.minInvestmentUsd).toBeLessThan(p.propertyValueUsd);
   });
 
   it("rejects an invalid record", () => {
     expect(propertySchema.safeParse({ ...PROPERTIES[0], occupancy: 1.5 }).success).toBe(false);
     expect(propertySchema.safeParse({ ...PROPERTIES[0], isMock: false }).success).toBe(false);
+  });
+
+  it("uses USD-scale numbers that fit the slider bounds", () => {
+    for (const p of PROPERTIES) {
+      expect(p.propertyValueUsd).toBeGreaterThanOrEqual(100_000);
+      expect(p.propertyValueUsd).toBeLessThanOrEqual(5_000_000);
+      expect(p.minInvestmentUsd % 100).toBe(0);
+      expect(p.minInvestmentUsd).toBeLessThanOrEqual(25_000);
+      expect(p.annualMaintenanceUsd % 25).toBe(0);
+      expect(p.annualMaintenanceUsd).toBeLessThanOrEqual(3_000);
+    }
   });
 
   it("looks up by id", () => {

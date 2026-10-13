@@ -1,37 +1,69 @@
 import type { Property } from "@/types/property";
 import { ASSET_TYPE_LABELS } from "@/types/property";
-import { formatAed, formatPercent } from "@/lib/format";
+import { formatPercent, formatUsd } from "@/lib/format";
 import { PropertyImage } from "./PropertyImage";
 
-export function PropertySummary({ property: p, ownershipShare }: { property: Property; ownershipShare: number }) {
+type Props = {
+  property: Property;
+  initialShare: number;
+  /** Shown only when reinvesting, when it can differ from the initial share. */
+  endingShare?: number;
+  horizonYears: number;
+};
+
+export function PropertySummary({ property: p, initialShare, endingShare, horizonYears }: Props) {
   return (
-    <section aria-labelledby="property-summary-heading" className="overflow-hidden rounded-lg border border-line bg-white">
+    <section aria-labelledby="property-summary-heading" className="overflow-hidden rounded-xl border border-line bg-white">
       <div className="relative aspect-[16/9] bg-surface">
         <PropertyImage src={p.imageSrc} alt={p.imageAlt} priority sizes="(min-width: 1024px) 420px, 100vw" className="object-cover" />
-        <span className="absolute right-3 top-3 rounded bg-white/90 px-2 py-1 text-xs text-muted">Mock data</span>
+        <span className="absolute right-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-muted">Illustrative property</span>
       </div>
       <div className="p-5">
-        <h2 id="property-summary-heading" className="text-xl">
+        <h2 id="property-summary-heading" className="text-h3">
           {p.name}
         </h2>
         <p className="mt-1 text-sm text-muted">
           {p.city}, {p.country} · {ASSET_TYPE_LABELS[p.assetType]}
         </p>
+
         <dl className="num mt-4 grid grid-cols-2 gap-4 border-t border-line pt-4 text-sm">
           <div>
-            <dt className="text-xs text-muted">Illustrative property value</dt>
-            <dd className="font-semibold">{formatAed(p.propertyValueAed)}</dd>
+            <dt className="text-xs text-muted">Property value (illustrative)</dt>
+            <dd className="font-bold">{formatUsd(p.propertyValueUsd)}</dd>
           </div>
           <div>
-            <dt className="text-xs text-muted">Your modelled ownership share</dt>
-            <dd className="font-semibold">{formatPercent(ownershipShare, 4)}</dd>
+            <dt className="text-xs text-muted">Initial ownership share</dt>
+            <dd className="font-bold">{formatPercent(initialShare, 4)}</dd>
           </div>
+          {endingShare !== undefined ? (
+            <div className="col-span-2">
+              <dt className="text-xs text-muted">Ending ownership share (after {horizonYears} years)</dt>
+              <dd className="font-bold">{formatPercent(endingShare, 4)}</dd>
+            </div>
+          ) : null}
         </dl>
-        <p className="mt-3 text-xs leading-relaxed text-muted">
-          Invested capital is the amount you put in. It is not the property value. Your share is modelled as
-          invested capital divided by property value.
+
+        <h3 className="mt-5 text-sm font-bold text-ink">Starting assumptions for this property</h3>
+        <dl className="num mt-2 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+          <Row label="Gross yield" value={formatPercent(p.grossYield)} />
+          <Row label="Occupancy" value={formatPercent(p.occupancy, 0)} />
+          <Row label="Operating expenses" value={`${formatPercent(p.opexRatio, 0)} of rent`} />
+          <Row label="Maintenance" value={`${formatUsd(p.annualMaintenanceUsd)} a year`} />
+          <Row label="Appreciation" value={`${formatPercent(p.appreciation)} a year`} />
+        </dl>
+        <p className="mt-4 text-sm leading-relaxed text-muted">
+          These numbers are invented to show how the model behaves. They are not verified market statistics. Your starting investment buys a share of the property, not the whole property.
         </p>
       </div>
     </section>
+  );
+}
+
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt className="text-xs text-muted">{label}</dt>
+      <dd className="font-semibold text-ink">{value}</dd>
+    </div>
   );
 }

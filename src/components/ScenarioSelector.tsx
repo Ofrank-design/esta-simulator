@@ -11,10 +11,11 @@ type Props = {
 export function ScenarioSelector({ active, onSelect, onReset }: Props) {
   return (
     <div>
-      <p id="scenario-label" className="text-sm font-medium text-ink">
-        Scenario preset
+      <p id="scenario-label" className="text-sm font-semibold text-ink">
+        Start from a preset
       </p>
-      <div role="group" aria-labelledby="scenario-label" className="mt-2 flex flex-wrap gap-2">
+      <p className="mt-1 text-sm text-muted">A preset replaces the assumptions below. You can still adjust anything afterwards.</p>
+      <div role="group" aria-labelledby="scenario-label" className="mt-3 flex flex-wrap gap-2">
         {SCENARIO_KEYS.map((kind) => (
           <button
             key={kind}
@@ -22,7 +23,7 @@ export function ScenarioSelector({ active, onSelect, onReset }: Props) {
             aria-pressed={active === kind}
             onClick={() => onSelect(kind)}
             className={
-              "rounded-full border px-4 py-1.5 text-sm transition-colors " +
+              "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors " +
               (active === kind
                 ? "border-midnight bg-midnight text-white"
                 : "border-line bg-white text-ink hover:border-midnight")
@@ -31,16 +32,16 @@ export function ScenarioSelector({ active, onSelect, onReset }: Props) {
             {SCENARIO_LABELS[kind]}
           </button>
         ))}
-        <button
-          type="button"
-          onClick={onReset}
-          className="rounded-full px-3 py-1.5 text-sm text-muted underline decoration-accent underline-offset-4 hover:text-midnight"
-        >
-          Reset
-        </button>
       </div>
+      <button
+        type="button"
+        onClick={onReset}
+        className="mt-3 text-sm font-semibold text-accent-strong underline decoration-accent underline-offset-4 hover:text-midnight"
+      >
+        Reset to property defaults
+      </button>
       {active === "custom" ? (
-        <p className="mt-2 text-xs text-muted">Custom: you&apos;ve changed an assumption since the last preset.</p>
+        <p className="mt-2 text-sm text-muted">You&apos;ve changed an assumption, so none of the presets match right now.</p>
       ) : null}
     </div>
   );

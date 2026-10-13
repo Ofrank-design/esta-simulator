@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import "@fontsource-variable/plus-jakarta-sans";
+import "@fontsource-variable/inter";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Disclaimer } from "@/components/Disclaimer";
 
 export const metadata: Metadata = {
-  title: { default: "ESTA Simulator — Real Estate Fractional Investment Simulator", template: "%s · ESTA Simulator" },
+  title: { default: "ESTA Simulator: test a property investment on paper", template: "%s · ESTA Simulator" },
   description:
-    "Explore illustrative fractional property scenarios, model rental income, and understand the long-term impact of your assumptions.",
+    "Explore sample properties, change the assumptions, and see how rent, costs and value changes could play out over ten years. Invented numbers and hypothetical results, for learning only.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "ESTA Simulator",
-    description: "Explore illustrative properties and simulate potential returns. Mock data, hypothetical results.",
+    description: "Sample properties, invented numbers and hypothetical results, for learning how a property investment behaves.",
     images: [{ url: "/images/branding/og-image.jpg", width: 1200, height: 630, alt: "ESTA Simulator" }],
   },
 };

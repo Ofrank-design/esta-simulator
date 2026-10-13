@@ -44,7 +44,8 @@ export function PropertyGrid({
 
       {visible.length === 0 ? (
         <div className="mt-4">
-          <EmptyState title="No properties match this filter">
+          <EmptyState title="No properties match that filter">
+            <p className="mb-3">Try a different property type, or clear the filter.</p>
             <button type="button" onClick={() => setType("all")} className="font-medium text-midnight underline decoration-accent underline-offset-4">
               Show all properties
             </button>

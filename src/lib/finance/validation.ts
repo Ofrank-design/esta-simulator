@@ -3,7 +3,7 @@ import { z } from "zod";
 export const MAINTENANCE_MODES = ["fixed", "inflation-adjusted"] as const;
 export const DISTRIBUTION_MODES = ["payout", "reinvest"] as const;
 
-/** Rates are decimals (0.065 = 6.5%). Money is AED. Zod rejects NaN and Infinity. */
+/** Rates are decimals (0.065 = 6.5%). Money is USD. Zod rejects NaN and Infinity. */
 export const projectionInputsSchema = z
   .object({
     years: z.number().int().min(1).max(30),

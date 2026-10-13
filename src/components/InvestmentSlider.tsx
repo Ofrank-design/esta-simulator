@@ -11,20 +11,26 @@ type Props = {
   format: (value: number) => string;
   onChange: (value: number) => void;
   helper: string;
+  /** The property's own starting value. Shows a "Changed" marker and a reset when the value differs. */
+  startingValue?: number;
 };
 
-export function InvestmentSlider({ label, value, min, max, step, format, onChange, helper }: Props) {
+export function InvestmentSlider({ label, value, min, max, step, format, onChange, helper, startingValue }: Props) {
   const id = useId();
   const helperId = `${id}-help`;
   const percent = max === min ? 0 : ((value - min) / (max - min)) * 100;
+  const changed = startingValue !== undefined && Math.abs(value - startingValue) > 1e-9;
 
   return (
     <div>
       <div className="flex items-baseline justify-between gap-4">
-        <label htmlFor={id} className="text-sm font-medium text-ink">
+        <label htmlFor={id} className="text-sm font-semibold text-ink">
           {label}
+          {changed ? (
+            <span className="ml-2 rounded-full bg-accent/15 px-2 py-0.5 text-xs font-semibold text-accent-strong">Changed</span>
+          ) : null}
         </label>
-        <output htmlFor={id} className="num text-sm font-semibold text-midnight">
+        <output htmlFor={id} className="num text-sm font-bold text-midnight">
           {format(value)}
         </output>
       </div>
@@ -45,9 +51,23 @@ export function InvestmentSlider({ label, value, min, max, step, format, onChang
         <span>{format(min)}</span>
         <span>{format(max)}</span>
       </div>
-      <p id={helperId} className="mt-1 text-xs leading-relaxed text-muted">
+      <p id={helperId} className="mt-1 text-sm leading-relaxed text-muted">
         {helper}
       </p>
+      {startingValue !== undefined ? (
+        <p className="num mt-1 flex items-center gap-3 text-xs text-muted">
+          <span>Starting value: {format(startingValue)}</span>
+          {changed ? (
+            <button
+              type="button"
+              onClick={() => onChange(startingValue)}
+              className="font-semibold text-accent-strong underline underline-offset-2"
+            >
+              Reset this
+            </button>
+          ) : null}
+        </p>
+      ) : null}
     </div>
   );
 }
