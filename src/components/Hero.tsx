@@ -28,7 +28,7 @@ export function Hero() {
         <p className="text-xs font-semibold tracking-[0.18em] text-white/90 md:text-sm">
           REAL ESTATE FRACTIONAL INVESTMENT SIMULATOR
         </p>
-        <h1 id="hero-heading" className="mt-5 max-w-2xl text-display text-white">
+        <h1 id="hero-heading" className="mt-5 max-w-3xl text-display text-white">
           Try a property investment
           <span className="block text-accent">on paper first</span>
         </h1>

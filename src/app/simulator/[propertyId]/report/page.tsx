@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getPropertyById } from "@/lib/data/properties";
+import { PROPERTIES, getPropertyById } from "@/lib/data/properties";
 import { ReportView } from "@/components/ReportView";
 import { toProjectionInputs } from "@/lib/finance/assumptions";
 import { projectInvestment } from "@/lib/finance/projections";
@@ -12,6 +12,10 @@ type Props = {
   params: Promise<{ propertyId: string }>;
   searchParams: Promise<SearchParamsRecord>;
 };
+
+export function generateStaticParams() {
+  return PROPERTIES.map((p) => ({ propertyId: p.id }));
+}
 
 export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
   const { propertyId } = await params;

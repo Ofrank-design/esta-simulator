@@ -127,3 +127,10 @@ body {
   border: 2px solid var(--midnight);
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35);
 }
+
+/* Print: plain white pages with sensible margins (the report page relies on this) */
+@page { margin: 14mm; }
+@media print {
+  html, body { background: #fff !important; }
+  a { text-decoration: none; }
+}

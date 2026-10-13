@@ -26,3 +26,14 @@ npm run build
 - Home: `/?type=residential|commercial|multifamily&sort=value-desc|value-asc|yield-desc|yield-asc`
 - Compare: `/compare?property=<id>&investment=<AED>&distributions=payout|reinvest`
 - Parsing lives in `src/lib/simulator/params.ts`, `src/lib/properties/query.ts`, `src/lib/compare/params.ts` (all unit-tested).
+
+
+## Model and conventions (v1.1.0)
+- **Currency:** US dollars everywhere. The original mock values were AED and were converted once at the AED/USD peg of 3.6725 (see the comment in `src/lib/data/properties.ts`). Money amounts in shared links carry `v=2`; older links with money amounts are treated as legacy and their amounts are ignored with a notice.
+- **Negative cash flow** is a capital call (extra money the investor contributes). It never creates a negative payout and never reduces ownership.
+- **Ownership is capped at 100%.** In reinvest mode, income that can't buy more ownership is paid as cash and shown separately.
+- **ROI** is profit if sold (after sale costs, cash received and everything contributed) divided by total contributed. Year 0 is 0%.
+- **Compare** uses the user's full current assumptions as the base case and shifts them for conservative and optimistic.
+- **Exports:** `/simulator/<id>/report?...` is a printable report; the CSV is built from the same projection rows.
+- **Typography:** Plus Jakarta Sans (headings) and Inter (body), both bundled through `@fontsource-variable/*` so no runtime font requests.
+- Definitions live in `src/lib/finance/definitions.ts`; the on-page notes, the report and the CSV all use them.

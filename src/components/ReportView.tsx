@@ -105,7 +105,7 @@ export function ReportView({ property: p, assumptions: a, result, backHref, noti
 
       <section className="mt-8" aria-labelledby="r-annual">
         <h2 id="r-annual" className="text-h3">Year by year</h2>
-        <div className="mt-3 overflow-x-auto print:overflow-visible">
+        <div role="region" aria-label="Year by year table, scrollable" tabIndex={0} className="mt-3 overflow-x-auto print:overflow-visible">
           <table className="num w-full text-right text-xs">
             <thead>
               <tr className="border-b border-line text-muted">

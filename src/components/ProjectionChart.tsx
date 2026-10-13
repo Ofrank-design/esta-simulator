@@ -37,16 +37,16 @@ export function ProjectionChart({ rows, mode }: { rows: readonly ProjectionRow[]
               <YAxis tick={{ fontSize: 12 }} tickFormatter={compactUsd} width={56} label={{ value: "USD", angle: -90, position: "insideLeft", fontSize: 12 }} />
               <Tooltip formatter={(v) => formatUsd(Number(v))} labelFormatter={(y) => `Year ${y}`} contentStyle={tooltipStyle} />
               <Legend verticalAlign="top" height={56} wrapperStyle={{ fontSize: 12 }} />
-              <Line type="monotone" dataKey="capitalAppreciation" name="Property appreciation" stroke={COLORS.midnight} strokeWidth={2} dot={false} />
+              <Line isAnimationActive={false} type="monotone" dataKey="capitalAppreciation" name="Property appreciation" stroke={COLORS.midnight} strokeWidth={2} dot={false} />
               {payout ? (
-                <Line type="monotone" dataKey="cumulativeCashDistributions" name="Cash distributions to date" stroke={COLORS.green} strokeWidth={2} strokeDasharray="6 3" dot={false} />
+                <Line isAnimationActive={false} type="monotone" dataKey="cumulativeCashDistributions" name="Cash distributions to date" stroke={COLORS.green} strokeWidth={2} strokeDasharray="6 3" dot={false} />
               ) : (
-                <Line type="monotone" dataKey="cumulativeReinvested" name="Reinvested distributions to date" stroke={COLORS.green} strokeWidth={2} strokeDasharray="6 3" dot={false} />
+                <Line isAnimationActive={false} type="monotone" dataKey="cumulativeReinvested" name="Reinvested distributions to date" stroke={COLORS.green} strokeWidth={2} strokeDasharray="6 3" dot={false} />
               )}
               {hasCalls ? (
-                <Line type="monotone" dataKey="cumulativeCapitalCalls" name="Capital calls to date" stroke={COLORS.red} strokeWidth={2} strokeDasharray="2 3" dot={false} />
+                <Line isAnimationActive={false} type="monotone" dataKey="cumulativeCapitalCalls" name="Capital calls to date" stroke={COLORS.red} strokeWidth={2} strokeDasharray="2 3" dot={false} />
               ) : null}
-              <Line type="monotone" dataKey="totalProfit" name="Profit if sold" stroke={COLORS.blue} strokeWidth={3} dot={false} />
+              <Line isAnimationActive={false} type="monotone" dataKey="totalProfit" name="Profit if sold" stroke={COLORS.blue} strokeWidth={3} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -62,7 +62,7 @@ export function ProjectionChart({ rows, mode }: { rows: readonly ProjectionRow[]
               <XAxis dataKey="year" tick={{ fontSize: 12 }} label={{ value: "Year", position: "insideBottom", offset: -10, fontSize: 12 }} />
               <YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => formatPercent(Number(v), 0)} width={56} />
               <Tooltip formatter={(v) => formatPercent(Number(v), 1)} labelFormatter={(y) => `Year ${y}`} contentStyle={tooltipStyle} />
-              <Line type="monotone" dataKey="totalRoi" name="ROI if sold" stroke={COLORS.midnight} strokeWidth={2} dot={false} />
+              <Line isAnimationActive={false} type="monotone" dataKey="totalRoi" name="ROI if sold" stroke={COLORS.midnight} strokeWidth={2} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>
