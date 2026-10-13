@@ -9,7 +9,36 @@ import { propertySchema, type Property } from "@/types/property";
  * (values to $5k, minimums to $100, maintenance to $25). Percentages were not changed.
  * There is no live exchange rate anywhere in the app.
  */
-const RAW_PROPERTIES: Property[] = [
+const MOCK_SOURCE = { id: "esta-illustrative-v1", name: "ESTA illustrative dataset" } as const;
+
+/** Every projection input in the launch dataset is an invented assumption. Nothing is a sourced fact. */
+const MOCK_PROVENANCE = {
+  propertyValueUsd: "assumption",
+  minInvestmentUsd: "assumption",
+  grossYield: "assumption",
+  occupancy: "assumption",
+  opexRatio: "assumption",
+  annualMaintenanceUsd: "assumption",
+  appreciation: "assumption",
+} as const;
+
+const MOCK_REVISIONS = [
+  { date: "2026-10-13", note: "Converted money values from AED to USD at the fixed 3.6725 peg and rounded. Percentages unchanged." },
+] as const;
+
+/** Fields every launch record shares. Spread into each record so none can drift. */
+const MOCK_RECORD = {
+  isMock: true,
+  currency: "USD",
+  dataStatus: "mock",
+  source: MOCK_SOURCE,
+  lastVerifiedAt: null,
+  dataUpdatedAt: "2026-10-13",
+  provenance: MOCK_PROVENANCE,
+  revisions: MOCK_REVISIONS,
+} as const;
+
+const RAW_PROPERTIES = [
   {
     id: "marina-residence",
     name: "Marina Residence",
@@ -26,7 +55,7 @@ const RAW_PROPERTIES: Property[] = [
     opexRatio: 0.25,
     appreciation: 0.03,
     description: "A mock waterfront apartment building used to illustrate a residential scenario.",
-    isMock: true,
+    ...MOCK_RECORD,
   },
   {
     id: "business-district-tower",
@@ -44,7 +73,7 @@ const RAW_PROPERTIES: Property[] = [
     opexRatio: 0.28,
     appreciation: 0.035,
     description: "A mock office tower used to illustrate a commercial scenario.",
-    isMock: true,
+    ...MOCK_RECORD,
   },
   {
     id: "palm-garden-villas",
@@ -62,7 +91,7 @@ const RAW_PROPERTIES: Property[] = [
     opexRatio: 0.22,
     appreciation: 0.03,
     description: "A mock villa community with lower yield and steadier occupancy assumptions.",
-    isMock: true,
+    ...MOCK_RECORD,
   },
   {
     id: "creek-harbour-offices",
@@ -80,7 +109,7 @@ const RAW_PROPERTIES: Property[] = [
     opexRatio: 0.3,
     appreciation: 0.035,
     description: "A mock office building with higher yield and higher vacancy risk assumptions.",
-    isMock: true,
+    ...MOCK_RECORD,
   },
   {
     id: "al-barsha-apartments",
@@ -98,7 +127,7 @@ const RAW_PROPERTIES: Property[] = [
     opexRatio: 0.26,
     appreciation: 0.028,
     description: "A mock multi-unit apartment block used to illustrate a multifamily scenario.",
-    isMock: true,
+    ...MOCK_RECORD,
   },
   {
     id: "jvc-residences",
@@ -116,7 +145,7 @@ const RAW_PROPERTIES: Property[] = [
     opexRatio: 0.27,
     appreciation: 0.032,
     description: "A mock residential complex with a higher yield and moderate occupancy assumption.",
-    isMock: true,
+    ...MOCK_RECORD,
   },
 ];
 

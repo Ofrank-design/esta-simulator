@@ -1,6 +1,8 @@
 import type { Property } from "@/types/property";
 import { ASSET_TYPE_LABELS } from "@/types/property";
 import { formatPercent, formatUsd } from "@/lib/format";
+import Link from "next/link";
+import { describeProvenance } from "@/lib/data/provenance";
 import { PropertyImage } from "./PropertyImage";
 
 type Props = {
@@ -54,6 +56,7 @@ export function PropertySummary({ property: p, initialShare, endingShare, horizo
         <p className="mt-4 text-sm leading-relaxed text-muted">
           These numbers are invented to show how the model behaves. They are not verified market statistics. Your starting investment buys a share of the property, not the whole property.
         </p>
+        <ProvenanceDetails property={p} />
       </div>
     </section>
   );
@@ -65,5 +68,27 @@ function Row({ label, value }: { label: string; value: string }) {
       <dt className="text-xs text-muted">{label}</dt>
       <dd className="font-semibold text-ink">{value}</dd>
     </div>
+  );
+}
+
+function ProvenanceDetails({ property: p }: { property: Property }) {
+  const info = describeProvenance(p);
+  return (
+    <details className="mt-4 rounded-lg border border-line bg-surface px-4 py-3 text-sm">
+      <summary className="cursor-pointer font-semibold text-midnight">About this property&apos;s data</summary>
+      <dl className="mt-3 space-y-2">
+        <div><dt className="text-xs text-muted">Data status</dt><dd className="font-semibold text-ink">{info.status}</dd></div>
+        <div><dt className="text-xs text-muted">Source</dt><dd className="font-semibold text-ink">{info.source}</dd></div>
+        <div><dt className="text-xs text-muted">Last verified</dt><dd className="font-semibold text-ink">{info.verified}</dd></div>
+        <div><dt className="text-xs text-muted">Inputs</dt><dd className="font-semibold text-ink">{info.inputs}</dd></div>
+        <div><dt className="text-xs text-muted">Currency</dt><dd className="font-semibold text-ink">{p.currency}</dd></div>
+        <div><dt className="text-xs text-muted">Record last changed</dt><dd className="font-semibold text-ink">{p.dataUpdatedAt}</dd></div>
+      </dl>
+      <p className="mt-3 text-muted">
+        <Link href="/methodology#sample-data" className="font-semibold text-accent-strong underline decoration-accent underline-offset-2 hover:text-midnight">
+          How sample data is labelled
+        </Link>
+      </p>
+    </details>
   );
 }

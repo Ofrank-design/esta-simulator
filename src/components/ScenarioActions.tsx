@@ -33,7 +33,7 @@ export function ScenarioActions({ property, assumptions }: { property: Property;
 
   const downloadCsv = () => {
     try {
-      downloadTextFile(scenarioFileName(property, "csv"), buildScenarioCsv(property, assumptions, new Date()));
+      downloadTextFile(scenarioFileName(property, "csv"), buildScenarioCsv(property, assumptions, new Date(), window.location.origin));
       setStatus({ kind: "ok", text: "CSV downloaded. It uses the assumptions shown on this page." });
     } catch {
       setStatus({ kind: "error", text: "We couldn't create the CSV. Try again, or reset the assumptions." });

@@ -9,6 +9,7 @@ const ITEMS = [
   { href: "/simulator/marina-residence", label: "Calculator", active: (p: string) => p.startsWith("/simulator") },
   { href: "/compare", label: "Compare", active: (p: string) => p === "/compare" },
   { href: "/#how-it-works", label: "How it works", active: () => false },
+  { href: "/methodology", label: "Methodology", active: (p: string) => p === "/methodology" },
 ];
 
 export function NavLinks() {

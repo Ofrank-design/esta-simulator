@@ -26,6 +26,7 @@ import { ProjectionPanel } from "./ProjectionPanel";
 import { ScenarioActions } from "./ScenarioActions";
 import { NoticeBanner } from "./NoticeBanner";
 import { ErrorState } from "./ErrorState";
+import { IncludedPanel } from "./IncludedPanel";
 
 const pct1 = (v: number) => formatPercent(v, 1);
 const pct0 = (v: number) => formatPercent(v, 0);
@@ -102,6 +103,7 @@ export function SimulatorWorkspace({
             <InvestmentSlider
               label="Starting investment"
               value={a.investment}
+              learnMore="ownership"
               {...inv}
               format={formatUsd}
               onChange={num("investment")}
@@ -111,6 +113,7 @@ export function SimulatorWorkspace({
             <InvestmentSlider
               label="Inflation"
               value={a.inflation}
+              learnMore="inflation"
               {...BOUNDS.inflation}
               format={pct1}
               onChange={num("inflation")}
@@ -120,6 +123,7 @@ export function SimulatorWorkspace({
             <InvestmentSlider
               label="Occupancy"
               value={a.occupancy}
+              learnMore="property-income"
               {...BOUNDS.occupancy}
               format={pct0}
               onChange={num("occupancy")}
@@ -129,6 +133,7 @@ export function SimulatorWorkspace({
             <InvestmentSlider
               label="Maintenance"
               value={a.maintenance}
+              learnMore="property-income"
               {...BOUNDS.maintenance}
               format={formatUsd}
               onChange={num("maintenance")}
@@ -137,6 +142,7 @@ export function SimulatorWorkspace({
             />
             <SegmentedControl
               legend="How maintenance changes over time"
+              learnMore="property-income"
               value={a.maintenanceMode}
               onChange={(v) => update({ maintenanceMode: v })}
               options={[
@@ -154,6 +160,7 @@ export function SimulatorWorkspace({
                 <InvestmentSlider
                   label="Gross rental yield"
                   value={a.grossYield}
+              learnMore="yields"
                   {...BOUNDS.grossYield}
                   format={pct1}
                   onChange={num("grossYield")}
@@ -163,6 +170,7 @@ export function SimulatorWorkspace({
                 <InvestmentSlider
                   label="Property appreciation"
                   value={a.appreciation}
+              learnMore="value-and-appreciation"
                   {...BOUNDS.appreciation}
                   format={pct1}
                   onChange={num("appreciation")}
@@ -172,6 +180,7 @@ export function SimulatorWorkspace({
                 <InvestmentSlider
                   label="Operating expenses"
                   value={a.opexRatio}
+              learnMore="property-income"
                   {...BOUNDS.opexRatio}
                   format={pct0}
                   onChange={num("opexRatio")}
@@ -181,6 +190,7 @@ export function SimulatorWorkspace({
                 <InvestmentSlider
                   label="Sale costs"
                   value={a.saleCostRate}
+              learnMore="sale-costs-and-roi"
                   {...BOUNDS.saleCostRate}
                   format={pct1}
                   onChange={num("saleCostRate")}
@@ -196,6 +206,7 @@ export function SimulatorWorkspace({
                     { value: "reinvest", label: "Reinvested" },
                   ]}
                   helper="Paid to you: income arrives as cash. Reinvested: income buys more of the property, up to 100% ownership. Anything beyond that is paid as cash."
+                  learnMore="your-share-of-income"
                 />
               </div>
             </div>
@@ -267,6 +278,12 @@ function Results({
             value={formatUsd(first.netCashFlow)}
             detail="Rent collected, minus running costs and maintenance. This is for the whole property, before your share."
             tone={first.netCashFlow < 0 ? "negative" : "neutral"}
+          />
+          <FinancialMetricCard
+            label="Net cash yield"
+            value={formatPercent(first.netCashYield, 2)}
+            detail={`The gross rental yield is ${formatPercent(inputs.grossYield, 1)}. After empty periods, running costs and maintenance, the income is worth ${formatPercent(first.netCashYield, 2)} a year on the money you put in.`}
+            tone={first.netCashYield < 0 ? "negative" : "neutral"}
           />
           {first.capitalCall > 0 ? (
             <FinancialMetricCard
@@ -347,7 +364,7 @@ function Results({
           <FinancialMetricCard
             label="Total value before sale costs"
             value={formatUsd(final.totalEconomicValue)}
-            detail="The value of your share plus all the cash you have received."
+            detail="Nominal: the value of your share plus all the cash you have received, in future dollars, before sale costs."
           />
           <FinancialMetricCard
             label="Profit if sold"
@@ -358,16 +375,18 @@ function Results({
           <FinancialMetricCard
             label="ROI if sold"
             value={formatSignedPercent(final.totalRoi)}
-            detail={`Profit divided by the ${formatUsd(contributed)} you contributed.`}
+            detail={`Nominal, not adjusted for inflation. Profit divided by the ${formatUsd(contributed)} you contributed.`}
             tone={final.totalRoi < 0 ? "negative" : "positive"}
           />
           <FinancialMetricCard
             label="Total value in today's money"
             value={formatUsd(final.realTotalEconomicValue)}
-            detail="Total value before sale costs, adjusted for inflation."
+            detail="Total value before sale costs, adjusted for inflation, so it reads in today's money."
           />
         </dl>
       </section>
+
+      <IncludedPanel inputs={inputs} />
 
       <section aria-labelledby="real-heading" className="rounded-xl border border-line bg-white p-5">
         <h2 id="real-heading" className="text-h3">What inflation does to your starting investment</h2>

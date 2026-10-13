@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ILLUSTRATIVE_NOTE } from "@/lib/finance/definitions";
 
 export const DISCLAIMER_TEXT = ILLUSTRATIVE_NOTE;
@@ -12,6 +13,11 @@ export function Disclaimer() {
           <p>{DISCLAIMER_TEXT}</p>
           <p className="mt-2">
             A property&apos;s value is not cash you can spend, and a rise in value is not profit until the property is sold. Actual results depend on vacancies, costs, taxes, fees, financing and the market, none of which are fully modelled here.
+          </p>
+          <p className="mt-3">
+            <Link href="/methodology" className="font-semibold text-white underline decoration-accent underline-offset-4 hover:text-accent">
+              How the numbers are calculated
+            </Link>
           </p>
         </div>
       </div>

@@ -279,3 +279,20 @@ describe("bounds, stability and validation", () => {
     expect(() => run({ occupancy: -1 })).toThrow(InvalidInputError);
   });
 });
+
+describe("net cash yield versus gross yield", () => {
+  it("equals property income after costs divided by property value, and sits below gross yield", () => {
+    const { rows } = run({ grossYield: 0.065, occupancy: 0.92, opexRatio: 0.25, maintenance: 1_200, propertyValue: 1_800_000 });
+    expect(rows[1].netCashYield).toBeCloseTo(rows[1].netCashFlow / 1_800_000, 12);
+    expect(rows[1].netCashYield).toBeLessThan(0.065);
+    expect(rows[1].netCashYield).toBeCloseTo(0.044183, 5);
+  });
+  it("equals gross yield only when there are no empty periods and no costs", () => {
+    expect(run().rows[1].netCashYield).toBeCloseTo(0.1, 12);
+  });
+  it("is negative when the property doesn't cover its costs, and is the same in payout and reinvest mode", () => {
+    const loss = run({ occupancy: 0, maintenance: 1_000 }).rows[1];
+    expect(loss.netCashYield).toBeLessThan(0);
+    expect(run({ distributionMode: "reinvest" }).rows[1].netCashYield).toBe(run().rows[1].netCashYield);
+  });
+});

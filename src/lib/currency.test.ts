@@ -6,6 +6,7 @@ import path from "node:path";
 const ALLOWED = [
   "src/lib/data/properties.ts", // documents the one-time conversion
   "src/lib/simulator/params.ts", // legacy link notice and versioning note
+  "src/lib/methodology.ts", // explains the one-time AED to USD conversion and the version history
 ];
 
 function walk(dir: string): string[] {

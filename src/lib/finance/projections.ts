@@ -34,6 +34,8 @@
  *                             elapsed, so no exit is modelled there.
  *  - Cash-on-cash           = cash actually paid in the year / contributed capital at the start of the year
  *  - Distribution yield     = distribution generated (cash or reinvested) / same denominator
+ *  - Net cash yield         = (distribution generated - capital call) / same denominator. Equals net cash
+ *                             flow / property value at the start of the year. Not the same as GROSS yield.
  *  - Real value             = nominal / (1 + inflation)^t
  *
  * IDENTITY (tested): profit = appreciation + cumulative distributions earned
@@ -50,7 +52,7 @@ import { safeDivide, summarize } from "./metrics";
 import type { ProjectionResult, ProjectionRow } from "./types";
 import { validateInputs, type ProjectionInputs } from "./validation";
 
-export const MODEL_VERSION = "1.1.0";
+export const MODEL_VERSION = "1.2.0";
 
 export class InvalidInputError extends Error {
   readonly errors: string[];
@@ -89,7 +91,7 @@ export function projectInvestment(raw: ProjectionInputs): ProjectionResult {
       holdingValue: investment, costBasis: investment, capitalAppreciation: 0,
       totalEconomicValue: investment, saleCosts: 0, netSaleProceeds: investment,
       totalProfit: 0, totalRoi: 0,
-      cashOnCashReturn: 0, distributionYield: 0, realTotalEconomicValue: investment,
+      cashOnCashReturn: 0, distributionYield: 0, netCashYield: 0, realTotalEconomicValue: investment,
     },
   ];
 
@@ -147,6 +149,7 @@ export function projectInvestment(raw: ProjectionInputs): ProjectionResult {
       totalRoi: safeDivide(totalProfit, totalContributedCapital),
       cashOnCashReturn: safeDivide(cashDistribution, contributedAtStart),
       distributionYield: safeDivide(distributionEarned, contributedAtStart),
+      netCashYield: safeDivide(distributionEarned - capitalCall, contributedAtStart),
       realTotalEconomicValue: toRealValue(totalEconomicValue, inflation, t),
     });
   }

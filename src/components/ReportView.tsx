@@ -5,12 +5,14 @@ import type { ProjectionResult } from "@/lib/finance/types";
 import { MODEL_VERSION } from "@/lib/finance/projections";
 import { DEFINITIONS, EXCLUSIONS, ILLUSTRATIVE_NOTE, TIMING_NOTE } from "@/lib/finance/definitions";
 import { formatPercent, formatSignedPercent, formatUsd } from "@/lib/format";
-import { ReportActions, GeneratedAt } from "./ReportActions";
+import { describeProvenance } from "@/lib/data/provenance";
+import { ReportActions, GeneratedAt, MethodologyLink } from "./ReportActions";
 
 type Props = { property: Property; assumptions: Assumptions; result: ProjectionResult; backHref: string; notices: string[] };
 
 export function ReportView({ property: p, assumptions: a, result, backHref, notices }: Props) {
   const d = defaultAssumptions(p);
+  const info = describeProvenance(p);
   const { summary, rows, inputs } = result;
   const f = summary.final;
   const reinvest = a.distributionMode === "reinvest";
@@ -32,6 +34,7 @@ export function ReportView({ property: p, assumptions: a, result, backHref, noti
     ["Initial ownership share", formatPercent(summary.initialOwnership, 4)],
     ...(reinvest ? [["Ending ownership share", formatPercent(summary.endingOwnership, 4)] as [string, string]] : []),
     ["Property income after costs, year 1 (whole property)", formatUsd(summary.firstYear.netCashFlow)],
+    [`Net cash yield, year 1 (gross yield input: ${formatPercent(a.grossYield, 1)})`, formatPercent(summary.firstYear.netCashYield, 2)],
     reinvest
       ? ["Distribution generated, year 1 (reinvested)", formatUsd(summary.firstYear.distributionEarned)]
       : ["Cash distribution, year 1", formatUsd(summary.firstYear.cashDistribution)],
@@ -80,6 +83,9 @@ export function ReportView({ property: p, assumptions: a, result, backHref, noti
         <h2 id="r-assumptions" className="text-h3">Assumptions used</h2>
         <p className="mt-1 text-sm text-muted">
           Property value {formatUsd(p.propertyValueUsd)} (illustrative). Property defaults are shown for comparison.
+        </p>
+        <p className="mt-1 text-sm text-muted">
+          Data status: {info.status}. Source: {info.source}. Last verified: {info.verified} {info.inputs}
         </p>
         <table className="num mt-3 w-full text-sm">
           <thead><tr className="border-b border-line text-left text-xs text-muted"><th className="py-2 pr-3 font-semibold">Assumption</th><th className="py-2 pr-3 font-semibold">This scenario</th><th className="py-2 font-semibold">Property default</th></tr></thead>
@@ -142,6 +148,7 @@ export function ReportView({ property: p, assumptions: a, result, backHref, noti
           ))}
         </dl>
         <p className="mt-4 text-sm text-muted"><strong className="font-semibold text-ink">Not included:</strong> {EXCLUSIONS}</p>
+        <p className="mt-4 text-sm text-muted">Full methodology: <MethodologyLink /></p>
         <p className="mt-4 text-xs text-muted">This report is an educational illustration, not investment, legal or tax advice. It uses the exact assumptions listed above, not the property defaults.</p>
       </section>
     </article>

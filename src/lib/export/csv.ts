@@ -5,6 +5,7 @@ import { MODEL_VERSION, projectInvestment } from "@/lib/finance/projections";
 import { toProjectionInputs } from "@/lib/finance/assumptions";
 import { EXCLUSIONS, ILLUSTRATIVE_NOTE } from "@/lib/finance/definitions";
 import { formatPlainNumber } from "@/lib/format";
+import { describeProvenance } from "@/lib/data/provenance";
 
 /** Quotes a field when needed and neutralises spreadsheet formulas (=, +, -, @). */
 export function csvField(value: string | number): string {
@@ -21,26 +22,29 @@ const HEADERS = [
   "Year", "Property value (USD)", "Gross potential rent (USD)", "Rent collected (USD)", "Operating expenses (USD)",
   "Maintenance (USD)", "Property income after costs (USD)", "Distribution generated for you (USD)",
   "Cash distribution paid to you (USD)", "Reinvested distribution (USD)", "Paid as cash at 100% ownership (USD)",
-  "Capital call (USD)", "Ownership share at year end (%)", "Value of your share (USD)", "Property appreciation (USD)",
+  "Capital call (USD)", "Net cash yield (%)", "Ownership share at year end (%)", "Value of your share (USD)", "Property appreciation (USD)",
   "Cumulative cash distributions (USD)", "Cumulative reinvested (USD)", "Cumulative capital calls (USD)",
   "Total contributed (USD)", "Total value before sale costs (USD)", "Sale costs if sold (USD)",
   "Profit if sold (USD)", "ROI if sold (%)", "Total value in today's money (USD)",
 ];
 
 /** Everything in the file comes from the same projection rows the screen shows. Money is rounded to cents. */
-export function buildScenarioCsv(property: Property, a: Assumptions, generatedAt: Date): string {
+export function buildScenarioCsv(property: Property, a: Assumptions, generatedAt: Date, origin = ""): string {
   const result = projectInvestment(toProjectionInputs(property, a));
   const d = defaultAssumptions(property);
   const n = (v: number) => formatPlainNumber(v, 2);
   const pct = (v: number, digits = 4) => formatPlainNumber(v * 100, digits);
+  const info = describeProvenance(property, generatedAt);
   const meta: [string, string][] = [
     ["ESTA Simulator scenario export", ""],
     ["Illustrative data", ILLUSTRATIVE_NOTE],
     ["Not modelled", EXCLUSIONS],
     ["Currency", "US dollars (USD). Percent columns are percentages."],
     ["Model version", MODEL_VERSION],
+    ["Methodology", `${origin}/methodology (definitions, formulas and what is not modelled)`],
     ["Generated", generatedAt.toISOString()],
     ["Property", `${property.name}, ${property.city} (${ASSET_TYPE_LABELS[property.assetType]}, mock data)`],
+    ["Data status", `${info.status}. Source: ${info.source}. Last verified: ${info.verified} ${info.inputs}`],
     ["Property value (USD)", n(property.propertyValueUsd)],
     ["Horizon (years)", String(result.inputs.years)],
     ["Starting investment (USD)", `${n(a.investment)} (property default ${n(d.investment)})`],
@@ -54,14 +58,15 @@ export function buildScenarioCsv(property: Property, a: Assumptions, generatedAt
     ["Sale costs (%)", pct(a.saleCostRate, 2)],
     ["Distributions", a.distributionMode === "payout" ? "Paid out as cash" : "Reinvested"],
   ];
-  const lines = meta.map(([k, v]) => `# ${csvField(v ? `${k}: ${v}` : k)}`);
+  // Comment lines are plain text, not CSV fields, so they are not quoted.
+  const lines = meta.map(([k, v]) => `# ${(v ? `${k}: ${v}` : k).replace(/[\r\n]+/g, " ")}`);
   lines.push("", HEADERS.map(csvField).join(","));
   for (const r of result.rows) {
     lines.push(
       [
         r.year, n(r.propertyValue), n(r.grossPotentialRent), n(r.collectedRent), n(r.operatingExpenses),
         n(r.maintenance), n(r.netCashFlow), n(r.distributionEarned), n(r.cashDistribution),
-        n(r.reinvestedDistribution), n(r.excessCashDistribution), n(r.capitalCall), pct(r.ownershipShare),
+        n(r.reinvestedDistribution), n(r.excessCashDistribution), n(r.capitalCall), pct(r.netCashYield, 2), pct(r.ownershipShare),
         n(r.holdingValue), n(r.capitalAppreciation), n(r.cumulativeCashDistributions), n(r.cumulativeReinvested),
         n(r.cumulativeCapitalCalls), n(r.totalContributedCapital), n(r.totalEconomicValue), n(r.saleCosts),
         n(r.totalProfit), pct(r.totalRoi, 2), n(r.realTotalEconomicValue),

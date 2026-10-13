@@ -17,6 +17,7 @@ const RESULTS = (reinvest: boolean, years: number): Row[] => [
     ? { label: "Year 1 distribution generated (reinvested)", cell: (o) => formatUsd(o.result.summary.firstYear.distributionEarned) }
     : { label: "Year 1 cash distribution", cell: (o) => formatUsd(o.result.summary.firstYear.cashDistribution) },
   { label: "Year 1 capital call", cell: (o) => formatUsd(o.result.summary.firstYear.capitalCall) },
+  { label: "Year 1 net cash yield", cell: (o) => formatPercent(o.result.summary.firstYear.netCashYield, 2) },
   ...(reinvest ? [] : [{ label: "Year 1 cash-on-cash yield", cell: (o: ScenarioOutcome) => formatPercent(o.result.summary.firstYear.cashOnCashReturn, 2) }]),
   { label: "Ending ownership share", cell: (o) => formatPercent(o.result.summary.endingOwnership, 4) },
   { label: `Value of your share, year ${years}`, cell: (o) => formatUsd(o.result.summary.final.holdingValue) },

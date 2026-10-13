@@ -18,7 +18,7 @@ export function ReportActions({ property, assumptions, backHref }: { property: P
           type="button"
           onClick={() => {
             try {
-              downloadTextFile(scenarioFileName(property, "csv"), buildScenarioCsv(property, assumptions, new Date()));
+              downloadTextFile(scenarioFileName(property, "csv"), buildScenarioCsv(property, assumptions, new Date(), window.location.origin));
               setMessage("CSV downloaded.");
             } catch {
               setMessage("We couldn't create the CSV. Try again.");
@@ -44,5 +44,15 @@ export function GeneratedAt() {
     <time dateTime={now.toISOString()} suppressHydrationWarning>
       {now.toLocaleString("en-US", { dateStyle: "long", timeStyle: "short" })}
     </time>
+  );
+}
+
+/** The full address of the methodology, shown as text so it survives printing. */
+export function MethodologyLink() {
+  const [origin] = useState(() => (typeof window === "undefined" ? "" : window.location.origin));
+  return (
+    <Link href="/methodology" className="font-semibold text-accent-strong underline decoration-accent underline-offset-2 print:text-black">
+      <span suppressHydrationWarning>{origin}/methodology</span>
+    </Link>
   );
 }

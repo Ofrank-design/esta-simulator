@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useId } from "react";
 
 type Props = {
@@ -13,9 +14,11 @@ type Props = {
   helper: string;
   /** The property's own starting value. Shows a "Changed" marker and a reset when the value differs. */
   startingValue?: number;
+  /** Id of the methodology section that explains this assumption. */
+  learnMore?: string;
 };
 
-export function InvestmentSlider({ label, value, min, max, step, format, onChange, helper, startingValue }: Props) {
+export function InvestmentSlider({ label, value, min, max, step, format, onChange, helper, startingValue, learnMore }: Props) {
   const id = useId();
   const helperId = `${id}-help`;
   const percent = max === min ? 0 : ((value - min) / (max - min)) * 100;
@@ -52,7 +55,16 @@ export function InvestmentSlider({ label, value, min, max, step, format, onChang
         <span>{format(max)}</span>
       </div>
       <p id={helperId} className="mt-1 text-sm leading-relaxed text-muted">
-        {helper}
+        {helper}{" "}
+        {learnMore ? (
+          <Link
+            href={`/methodology#${learnMore}`}
+            aria-label={`Learn how ${label.toLowerCase()} is used in the methodology`}
+            className="whitespace-nowrap font-semibold text-accent-strong underline decoration-accent underline-offset-2 hover:text-midnight"
+          >
+            Learn more
+          </Link>
+        ) : null}
       </p>
       {startingValue !== undefined ? (
         <p className="num mt-1 flex items-center gap-3 text-xs text-muted">

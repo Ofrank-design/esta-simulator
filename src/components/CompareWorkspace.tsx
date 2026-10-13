@@ -97,6 +97,7 @@ export function CompareWorkspace() {
             format={formatUsd}
             onChange={(v) => go(property, { ...current, investment: v })}
             helper="Used for all three scenarios."
+            learnMore="ownership"
             startingValue={defaults.investment}
           />
           <SegmentedControl
@@ -112,7 +113,10 @@ export function CompareWorkspace() {
           <div className="border-t border-line pt-5">
             <h3 className="text-base font-bold">Your current assumptions</h3>
             <p className="mt-1 text-sm text-muted">
-              The base case uses exactly these. Conservative and optimistic nudge them by the amounts shown in the table.
+              The base case uses exactly these. Conservative and optimistic nudge them by the amounts shown in the table.{" "}
+              <Link href="/methodology#presets" className="font-semibold text-accent-strong underline decoration-accent underline-offset-2 hover:text-midnight">
+                What the presets change
+              </Link>
             </p>
             <dl className="num mt-3 grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
               {summary.map((s) => (

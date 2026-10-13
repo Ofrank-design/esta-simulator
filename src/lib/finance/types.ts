@@ -53,6 +53,12 @@ export interface ProjectionRow {
   cashOnCashReturn: number;
   /** distributionEarned / contributed capital at the start of the year (cash or reinvested). */
   distributionYield: number;
+  /**
+   * Net cash yield: (distribution earned - capital call) / contributed capital at the start of the year.
+   * What the property's income, after empty periods, running costs and maintenance, is worth as a
+   * yearly return on the money put in. Compare it with the GROSS rental yield input.
+   */
+  netCashYield: number;
   /** totalEconomicValue deflated to today's purchasing power. */
   realTotalEconomicValue: number;
 }
