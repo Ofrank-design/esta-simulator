@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/* ESTA design tokens (from the brand sheet) */
+:root {
+  --midnight: #0b2545;
+  --accent: #10b981;
+  --accent-strong: #047857;
+  --info: #3b82f6;
+  --surface: #f1f5f9;
+  --white: #ffffff;
+  --growth: #047857;
+  --risk: #b91c1c;
+  --text: #1e293b;
+  --text-muted: #475569;
+  --border: #e2e8f0;
+}
+
+@theme inline {
+  --color-midnight: var(--midnight);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-info: var(--info);
+  --color-surface: var(--surface);
+  --color-growth: var(--growth);
+  --color-risk: var(--risk);
+  --color-ink: var(--text);
+  --color-muted: var(--text-muted);
+  --color-line: var(--border);
+  --font-heading: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  background: var(--surface);
+  color: var(--text);
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer base {
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    color: var(--midnight);
+  }
+}
+
+/* Financial values use tabular numerals */
+.num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+:focus-visible {
+  outline: 2px solid #059669;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Range sliders */
+.esta-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.esta-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--midnight);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35);
+}
+.esta-range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--midnight);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35);
+}

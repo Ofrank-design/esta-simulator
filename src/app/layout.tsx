@@ -1,0 +1,35 @@
+import type { Metadata } from "next";
+import "@fontsource-variable/plus-jakarta-sans";
+import "./globals.css";
+import { SiteHeader } from "@/components/SiteHeader";
+import { Disclaimer } from "@/components/Disclaimer";
+
+export const metadata: Metadata = {
+  title: { default: "ESTA Simulator — Real Estate Fractional Investment Simulator", template: "%s · ESTA Simulator" },
+  description:
+    "Explore illustrative fractional property scenarios, model rental income, and understand the long-term impact of your assumptions.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  openGraph: {
+    title: "ESTA Simulator",
+    description: "Explore illustrative properties and simulate potential returns. Mock data, hypothetical results.",
+    images: [{ url: "/images/branding/og-image.jpg", width: 1200, height: 630, alt: "ESTA Simulator" }],
+  },
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body className="flex min-h-screen flex-col">
+        <SiteHeader />
+        <main className="flex-1">{children}</main>
+        <Disclaimer />
+      </body>
+    </html>
+  );
+}

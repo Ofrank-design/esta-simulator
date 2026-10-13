@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="Property image placeholder">
+  <rect width="1600" height="1000" fill="#E2E8F0"/>
+  <g fill="none" stroke="#0B2545" stroke-opacity=".35" stroke-width="6">
+    <path d="M520 700V420l140-90 140 90v280M800 700V300l140-90 140 90v400M520 700h560"/>
+    <path d="M590 500h40M590 560h40M590 620h40M860 400h40M860 460h40M860 520h40M860 580h40M1000 400h40M1000 460h40M1000 520h40M1000 580h40"/>
+  </g>
+  <text x="800" y="800" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="30" fill="#475569">Property image not available</text>
+</svg>
