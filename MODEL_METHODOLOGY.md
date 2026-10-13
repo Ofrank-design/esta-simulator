@@ -196,7 +196,8 @@ Maintenance                          $325.00
 Property income after costs          $29,302.00 − $7,325.50 − $325.00 = $21,651.50
 
 Your year 1 cash distribution        0.5102% × $21,651.50 = $110.47
-Net cash yield, year 1               $110.47 ÷ $2,500.00 = 4.42% (the gross yield input was 6.5%)
+Net cash yield, year 1               $110.47 ÷ $2,500.00 = 4.42%
+                                     (the gross yield input was 6.5%)
 
 Property value, end of year 1        $490,000.00 × (1 + 3.0%) = $504,700.00
 Value of your share, end of year 1   0.5102% × $504,700.00 = $2,575.00
@@ -207,7 +208,8 @@ Cash distributions received          $1,266.81
 Sale costs at 2.0%                   $67.20
 Profit if sold                       $3,292.60 + $1,266.81 − $2,500.00 = $2,059.41
 ROI if sold                          $2,059.41 ÷ $2,500.00 = +82.4%
-Value in today's money               $3,614.29 (total value before sale costs, adjusted for 2.5% inflation)
+Value in today's money               $3,614.29
+                                     (total value before sale costs, adjusted for 2.5% inflation)
 ```
 
 <a id="assumptions-and-ranges"></a>

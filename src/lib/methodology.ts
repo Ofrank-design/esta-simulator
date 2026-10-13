@@ -82,7 +82,8 @@ export function workedExample(): { title: string; lines: string[] } {
       `Property income after costs          ${money2(y1.collectedRent)} − ${money2(y1.operatingExpenses)} − ${money2(y1.maintenance)} = ${money2(y1.netCashFlow)}`,
       "",
       `Your year 1 cash distribution        ${pctStr(share, 4)} × ${money2(y1.netCashFlow)} = ${money2(y1.cashDistribution)}`,
-      `Net cash yield, year 1               ${money2(y1.cashDistribution)} ÷ ${money2(a.investment)} = ${pctStr(y1.netCashYield, 2)} (the gross yield input was ${pctStr(a.grossYield)})`,
+      `Net cash yield, year 1               ${money2(y1.cashDistribution)} ÷ ${money2(a.investment)} = ${pctStr(y1.netCashYield, 2)}`,
+      `${" ".repeat(37)}(the gross yield input was ${pctStr(a.grossYield)})`,
       "",
       `Property value, end of year 1        ${money2(property.propertyValueUsd)} × (1 + ${pctStr(a.appreciation)}) = ${money2(y1.propertyValue)}`,
       `Value of your share, end of year 1   ${pctStr(share, 4)} × ${money2(y1.propertyValue)} = ${money2(y1.holdingValue)}`,
@@ -93,7 +94,8 @@ export function workedExample(): { title: string; lines: string[] } {
       `${`Sale costs at ${pctStr(a.saleCostRate)}`.padEnd(37)}${money2(y10.saleCosts)}`,
       `Profit if sold                       ${money2(y10.netSaleProceeds)} + ${money2(y10.cumulativeCashDistributions)} − ${money2(y10.totalContributedCapital)} = ${money2(y10.totalProfit)}`,
       `ROI if sold                          ${money2(y10.totalProfit)} ÷ ${money2(y10.totalContributedCapital)} = ${formatSignedPercent(y10.totalRoi)}`,
-      `Value in today's money               ${money2(y10.realTotalEconomicValue)} (total value before sale costs, adjusted for ${pctStr(a.inflation)} inflation)`,
+      `Value in today's money               ${money2(y10.realTotalEconomicValue)}`,
+      `${" ".repeat(37)}(total value before sale costs, adjusted for ${pctStr(a.inflation)} inflation)`,
     ],
   };
 }
