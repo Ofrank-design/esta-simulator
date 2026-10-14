@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ILLUSTRATIVE_NOTE } from "@/lib/finance/definitions";
+import { FEEDBACK_HREF } from "@/lib/site-config";
 
 export const DISCLAIMER_TEXT = ILLUSTRATIVE_NOTE;
 
@@ -18,6 +19,18 @@ export function Disclaimer() {
             <Link href="/methodology" className="font-semibold text-white underline decoration-accent underline-offset-4 hover:text-accent">
               How the numbers are calculated
             </Link>
+            {FEEDBACK_HREF ? (
+              <>
+                <span aria-hidden="true" className="mx-3 text-white/40">|</span>
+                <a
+                  href={FEEDBACK_HREF}
+                  {...(FEEDBACK_HREF.startsWith("https") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className="font-semibold text-white underline decoration-accent underline-offset-4 hover:text-accent"
+                >
+                  Tell us what&apos;s unclear, or what you&apos;d need
+                </a>
+              </>
+            ) : null}
           </p>
         </div>
       </div>
