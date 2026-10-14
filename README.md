@@ -26,11 +26,15 @@ npm run dev        # http://localhost:3000
 | `npm run typecheck` | TypeScript, no emit |
 | `npm run lint` | ESLint |
 | `npm run build` | Production build |
+| `npm run check:routes` | Serve the production build, request every route, and fail on a bad status or any server log error (run after `build`) |
+| `npm run test:e2e` | Browser smoke tests (needs `build` first, and a browser: `npx playwright install chromium`) |
 | `npm run docs:methodology` | Regenerate `MODEL_METHODOLOGY.md` from its source |
 | `npm run validation:summary` | Summarise user sessions (see below) |
 | `npm run validation:template` | Rewrite the session CSV template |
 
-Optional setting, in `.env.local` (see `.env.example`): `NEXT_PUBLIC_FEEDBACK_URL` is a `mailto:` link or an `https://` form. When it is set, the footer shows a feedback link. When it isn't, nothing is shown. The value is public.
+Optional settings, in `.env.local` (see `.env.example`). Both are public values.
+- `NEXT_PUBLIC_SITE_URL`: your real address, used for canonical links, the social preview and the sitemap. On Vercel the production address is picked up automatically.
+- `NEXT_PUBLIC_FEEDBACK_URL`: a `mailto:` link or an `https://` form. When set, the footer shows a feedback link. When not, nothing is shown.
 
 ## What's where
 - `src/lib/finance/` the projection engine: pure, deterministic TypeScript. The model notes are at the top of `projections.ts`.
@@ -64,5 +68,13 @@ Every property has a data status, a source, a last verified date, and a sourced 
 
 An 85 second walkthrough is in `esta-demo.mp4` (delivered alongside this project, not committed to the repository).
 
+## Releasing
+CI (`.github/workflows/ci.yml`) runs on every push and pull request: strict `npm ci` install, typecheck, lint, tests, production build, a route and server log check, a production dependency audit, then the browser tests. After a deployment, run the **Check a deployed site** workflow with the live address and the commit hash. Step by step instructions and the launch checklist are in [`docs/RELEASE.md`](docs/RELEASE.md). Ongoing data and model upkeep is in [`docs/OPERATIONS.md`](docs/OPERATIONS.md).
+
+The footer shows which commit a site was built from, and every page carries it in `<meta name="build-commit">`.
+
+## Privacy
+No accounts, no cookies, no analytics, and no requests to other sites (tests check the last two). See `/privacy`. Update that page before adding anything that changes it.
+
 ## Status
-Roadmap phases 1 to 4 (model correctness, user journey and exports, USD and copy, methodology and data rules) and the Phase 6 kit are done. Phase 5 (continuous integration, deployment, monitoring) is not. Sessions have not been run.
+Roadmap phases 1 to 6 are built. What needs you: deploying to a public address (needs your hosting account), running the observed sessions, and a final read of the methodology wording by someone accountable for the product.
