@@ -6,6 +6,7 @@ import { PROPERTIES, getPropertyById } from "@/lib/data/properties";
 import { SimulatorWorkspace } from "@/components/SimulatorWorkspace";
 import { parseAssumptionsDetailed } from "@/lib/simulator/params";
 import { recordGetter, type SearchParamsRecord } from "@/lib/url";
+import { openGraphFor } from "@/lib/seo";
 
 type Props = {
   params: Promise<{ propertyId: string }>;
@@ -19,7 +20,13 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
   const { propertyId } = await params;
   const property = getPropertyById(propertyId);
-  return { title: property ? `${property.name} simulator` : "Property not found" };
+  if (!property) return { title: "Property not found" };
+  const description = `Model ten years of rent, costs and value changes for ${property.name}, a sample ${property.assetType} property. Invented numbers, hypothetical results.`;
+  return {
+    title: `${property.name} simulator`,
+    description,
+    openGraph: openGraphFor(`${property.name} simulator`, description),
+  };
 }
 
 export default function SimulatorPage({ params, searchParams }: Props) {

@@ -10,7 +10,7 @@ import { SCENARIO_DELTAS, SCENARIO_KEYS, SCENARIO_LABELS, defaultAssumptions, to
 import { DEFINITIONS, EXCLUSIONS_DETAIL, ILLUSTRATIVE_NOTE, TIMING_NOTE } from "@/lib/finance/definitions";
 import { MODEL_VERSION, projectInvestment } from "@/lib/finance/projections";
 import { PROPERTIES } from "@/lib/data/properties";
-import { STALE_AFTER_DAYS, STATUS_LABELS } from "@/lib/data/provenance";
+import { STALE_AFTER_DAYS, STATUS_LABELS, effectiveStatus } from "@/lib/data/provenance";
 import { formatPercent, formatSignedPercent, formatUsd } from "@/lib/format";
 
 export type Block =
@@ -313,7 +313,7 @@ export function methodologySections(): MethodSection[] {
             p.name,
             p.assetType.charAt(0).toUpperCase() + p.assetType.slice(1),
             formatUsd(p.propertyValueUsd),
-            STATUS_LABELS[p.dataStatus],
+            STATUS_LABELS[effectiveStatus(p, new Date("2026-10-13T00:00:00Z"))],
             p.source.name,
             p.lastVerifiedAt ?? "Never",
           ]),

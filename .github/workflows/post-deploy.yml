@@ -1,0 +1,43 @@
+name: Check a deployed site
+
+# Run this by hand after each deployment. It opens the real site in a browser and runs the same
+# smoke tests as CI, plus a check that the site was built from the commit you expect.
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Address of the deployed site, for example https://esta.example.com"
+        required: true
+      commit:
+        description: "The full commit hash that should be live (optional but recommended)"
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Run the smoke tests against the live site
+        env:
+          E2E_BASE_URL: ${{ inputs.url }}
+          EXPECT_COMMIT: ${{ inputs.commit }}
+        run: npm run test:e2e
+      - name: Keep the report if something failed
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            test-results
+            playwright-report
+          retention-days: 7

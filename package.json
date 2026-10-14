@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "docs:methodology": "tsx scripts/generate-methodology.ts",
     "validation:summary": "tsx scripts/validation-summary.ts",
-    "validation:template": "tsx scripts/write-session-template.ts"
+    "validation:template": "tsx scripts/write-session-template.ts",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",
@@ -25,6 +26,8 @@
     "zod": "^4.6.6"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.64.0",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^22.20.5",
     "@types/react": "^19",
@@ -35,5 +38,8 @@
     "tsx": "^4.23.15",
     "typescript": "^5",
     "vitest": "^5.0.4"
+  },
+  "engines": {
+    "node": ">=20.9"
   }
 }

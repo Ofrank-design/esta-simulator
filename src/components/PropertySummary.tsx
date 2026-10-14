@@ -2,7 +2,7 @@ import type { Property } from "@/types/property";
 import { ASSET_TYPE_LABELS } from "@/types/property";
 import { formatPercent, formatUsd } from "@/lib/format";
 import Link from "next/link";
-import { describeProvenance } from "@/lib/data/provenance";
+import { describeProvenance, effectiveStatus } from "@/lib/data/provenance";
 import { PropertyImage } from "./PropertyImage";
 
 type Props = {
@@ -56,6 +56,11 @@ export function PropertySummary({ property: p, initialShare, endingShare, horizo
         <p className="mt-4 text-sm leading-relaxed text-muted">
           These numbers are invented to show how the model behaves. They are not verified market statistics. Your starting investment buys a share of the property, not the whole property.
         </p>
+        {effectiveStatus(p) === "stale" ? (
+          <p role="note" className="mt-4 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+            This property&apos;s data hasn&apos;t been checked recently, so treat these numbers as out of date.
+          </p>
+        ) : null}
         <ProvenanceDetails property={p} />
       </div>
     </section>

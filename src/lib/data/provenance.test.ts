@@ -79,3 +79,16 @@ describe("staleness and descriptions", () => {
     expect(describeProvenance(verified, new Date("2026-10-13T00:00:00Z")).inputs).toBe("1 of 7 inputs are sourced facts. The rest are assumptions.");
   });
 });
+
+import { listProperties } from "./properties";
+
+describe("withdrawn records", () => {
+  it("are kept in the data but never listed", () => {
+    const withdrawn = { ...base, id: "gone-property", dataStatus: "withdrawn" as const, isMock: false };
+    const listed = listProperties([base, withdrawn]);
+    expect(listed.map((p) => p.id)).toEqual([base.id]);
+  });
+  it("leave the launch dataset unchanged", () => {
+    expect(PROPERTIES).toHaveLength(6);
+  });
+});

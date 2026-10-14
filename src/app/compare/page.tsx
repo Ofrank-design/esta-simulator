@@ -2,7 +2,10 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { CompareWorkspace } from "@/components/CompareWorkspace";
 
-export const metadata: Metadata = { title: "Compare scenarios" };
+export const metadata: Metadata = {
+  title: "Compare scenarios",
+  description: "See a cautious, a base and an optimistic version of your assumptions side by side. Invented properties, hypothetical results.",
+};
 
 export default function ComparePage() {
   return (

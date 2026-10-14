@@ -20,3 +20,21 @@ describe("feedback link", () => {
     }
   });
 });
+
+import { siteUrl } from "./site-config";
+
+describe("site address", () => {
+  it("prefers an explicit address and trims trailing slashes", () => {
+    expect(siteUrl({ NEXT_PUBLIC_SITE_URL: "https://esta.example/" })).toBe("https://esta.example");
+  });
+  it("ignores an invalid explicit address", () => {
+    expect(siteUrl({ NEXT_PUBLIC_SITE_URL: "javascript:alert(1)" })).toBe("http://localhost:3000");
+  });
+  it("uses the Vercel production address when present, then the deployment address", () => {
+    expect(siteUrl({ VERCEL_PROJECT_PRODUCTION_URL: "esta.vercel.app", VERCEL_URL: "esta-abc.vercel.app" })).toBe("https://esta.vercel.app");
+    expect(siteUrl({ VERCEL_URL: "esta-abc.vercel.app" })).toBe("https://esta-abc.vercel.app");
+  });
+  it("falls back to localhost for local builds", () => {
+    expect(siteUrl({})).toBe("http://localhost:3000");
+  });
+});

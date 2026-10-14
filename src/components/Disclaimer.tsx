@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ILLUSTRATIVE_NOTE } from "@/lib/finance/definitions";
-import { FEEDBACK_HREF } from "@/lib/site-config";
+import { BUILD_COMMIT, FEEDBACK_HREF } from "@/lib/site-config";
+import { MODEL_VERSION } from "@/lib/finance/projections";
 
 export const DISCLAIMER_TEXT = ILLUSTRATIVE_NOTE;
 
@@ -19,6 +20,10 @@ export function Disclaimer() {
             <Link href="/methodology" className="font-semibold text-white underline decoration-accent underline-offset-4 hover:text-accent">
               How the numbers are calculated
             </Link>
+            <span aria-hidden="true" className="mx-3 text-white/40">|</span>
+            <Link href="/privacy" className="font-semibold text-white underline decoration-accent underline-offset-4 hover:text-accent">
+              Privacy
+            </Link>
             {FEEDBACK_HREF ? (
               <>
                 <span aria-hidden="true" className="mx-3 text-white/40">|</span>
@@ -31,6 +36,10 @@ export function Disclaimer() {
                 </a>
               </>
             ) : null}
+          </p>
+          <p className="mt-4 text-xs text-white/70">
+            Model version {MODEL_VERSION}
+            {BUILD_COMMIT !== "unknown" ? <> · build <span data-testid="build-commit">{BUILD_COMMIT.slice(0, 7)}</span></> : null}
           </p>
         </div>
       </div>

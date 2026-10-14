@@ -150,7 +150,15 @@ const RAW_PROPERTIES = [
 ];
 
 /** Validated at module load: an invalid record fails fast. */
-export const PROPERTIES: readonly Property[] = RAW_PROPERTIES.map((p) => propertySchema.parse(p));
+const ALL_PROPERTIES: readonly Property[] = RAW_PROPERTIES.map((p) => propertySchema.parse(p));
+
+/** Withdrawn records stay in the data (for the audit trail) but are never shown, linked or served. */
+export function listProperties(all: readonly Property[]): Property[] {
+  return all.filter((p) => p.dataStatus !== "withdrawn");
+}
+
+export const PROPERTIES: readonly Property[] = listProperties(ALL_PROPERTIES);
+if (PROPERTIES.length === 0) throw new Error("At least one property must be listed.");
 
 export function getPropertyById(id: string): Property | undefined {
   return PROPERTIES.find((p) => p.id === id);

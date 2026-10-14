@@ -44,3 +44,7 @@ next-env.d.ts
 # user research: may identify people, so never commit it by accident
 /docs/validation/sessions.csv
 /docs/validation/RESULTS.md
+
+# playwright
+/test-results/
+/playwright-report/
