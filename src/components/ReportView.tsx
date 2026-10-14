@@ -8,11 +8,11 @@ import { formatPercent, formatSignedPercent, formatUsd } from "@/lib/format";
 import { describeProvenance } from "@/lib/data/provenance";
 import { ReportActions, GeneratedAt, MethodologyLink } from "./ReportActions";
 
-type Props = { property: Property; assumptions: Assumptions; result: ProjectionResult; backHref: string; notices: string[] };
+type Props = { property: Property; assumptions: Assumptions; result: ProjectionResult; backHref: string; notices: string[]; now: Date };
 
-export function ReportView({ property: p, assumptions: a, result, backHref, notices }: Props) {
+export function ReportView({ property: p, assumptions: a, result, backHref, notices, now }: Props) {
   const d = defaultAssumptions(p);
-  const info = describeProvenance(p);
+  const info = describeProvenance(p, now);
   const { summary, rows, inputs } = result;
   const f = summary.final;
   const reinvest = a.distributionMode === "reinvest";

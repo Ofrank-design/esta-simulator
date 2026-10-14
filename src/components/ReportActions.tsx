@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import type { Property } from "@/types/property";
 import type { Assumptions } from "@/lib/finance/assumptions";
@@ -37,14 +37,20 @@ export function ReportActions({ property, assumptions, backHref }: { property: P
   );
 }
 
-/** The time is read on the reader's device, so it shows their local time. */
+/**
+ * The time is read on the reader's own device, so it shows their local time. It must not call
+ * `new Date()` while the page is being prepared on the server, so the server (and the first paint)
+ * say "today" and the browser swaps in the exact time.
+ */
+const noSubscribe = () => () => {};
+let clientNow: Date | null = null;
+const getClientNow = () => (clientNow ??= new Date());
+const getServerNow = () => null;
+
 export function GeneratedAt() {
-  const [now] = useState(() => new Date());
-  return (
-    <time dateTime={now.toISOString()} suppressHydrationWarning>
-      {now.toLocaleString("en-US", { dateStyle: "long", timeStyle: "short" })}
-    </time>
-  );
+  const now = useSyncExternalStore(noSubscribe, getClientNow, getServerNow);
+  if (!now) return <time>today</time>;
+  return <time dateTime={now.toISOString()}>{now.toLocaleString("en-US", { dateStyle: "long", timeStyle: "short" })}</time>;
 }
 
 /** The full address of the methodology, shown as text so it survives printing. */

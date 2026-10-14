@@ -35,11 +35,14 @@ export function SimulatorWorkspace({
   property,
   initialAssumptions,
   initialNotices = [],
+  asOf,
 }: {
   property: Property;
   /** Already validated on the server from the URL (see parseAssumptionsDetailed). */
   initialAssumptions: Assumptions;
   initialNotices?: string[];
+  /** Today, as YYYY-MM-DD, read once on the server. */
+  asOf: string;
 }) {
   const defaults = useMemo(() => defaultAssumptions(property), [property]);
   const [a, setA] = useState<Assumptions>(initialAssumptions);
@@ -94,6 +97,7 @@ export function SimulatorWorkspace({
             initialShare={ok?.summary.initialOwnership ?? 0}
             endingShare={reinvest && ok ? ok.summary.endingOwnership : undefined}
             horizonYears={ok?.inputs.years ?? 10}
+            asOf={asOf}
           />
 
           <section aria-labelledby="controls-heading" className="space-y-6 rounded-xl border border-line bg-white p-5">

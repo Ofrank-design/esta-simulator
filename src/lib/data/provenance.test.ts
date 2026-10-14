@@ -70,7 +70,7 @@ describe("staleness and descriptions", () => {
     expect(effectiveStatus(base, old)).toBe("mock");
   });
   it("describes where a mock record's numbers come from, in plain words", () => {
-    const d = describeProvenance(base);
+    const d = describeProvenance(base, new Date("2026-10-13T00:00:00Z"));
     expect(d.status).toBe("Sample (invented)");
     expect(d.verified).toMatch(/Never/);
     expect(d.inputs).toMatch(/Every input is an assumption/);

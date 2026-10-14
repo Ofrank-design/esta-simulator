@@ -11,9 +11,12 @@ type Props = {
   /** Shown only when reinvesting, when it can differ from the initial share. */
   endingShare?: number;
   horizonYears: number;
+  /** The day this page is being viewed, as YYYY-MM-DD. Read once by the page, used to spot out of date data. */
+  asOf: string;
 };
 
-export function PropertySummary({ property: p, initialShare, endingShare, horizonYears }: Props) {
+export function PropertySummary({ property: p, initialShare, endingShare, horizonYears, asOf }: Props) {
+  const now = new Date(`${asOf}T00:00:00Z`);
   return (
     <section aria-labelledby="property-summary-heading" className="overflow-hidden rounded-xl border border-line bg-white">
       <div className="relative aspect-[16/9] bg-surface">
@@ -56,12 +59,12 @@ export function PropertySummary({ property: p, initialShare, endingShare, horizo
         <p className="mt-4 text-sm leading-relaxed text-muted">
           These numbers are invented to show how the model behaves. They are not verified market statistics. Your starting investment buys a share of the property, not the whole property.
         </p>
-        {effectiveStatus(p) === "stale" ? (
+        {effectiveStatus(p, now) === "stale" ? (
           <p role="note" className="mt-4 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950">
             This property&apos;s data hasn&apos;t been checked recently, so treat these numbers as out of date.
           </p>
         ) : null}
-        <ProvenanceDetails property={p} />
+        <ProvenanceDetails property={p} now={now} />
       </div>
     </section>
   );
@@ -76,8 +79,8 @@ function Row({ label, value }: { label: string; value: string }) {
   );
 }
 
-function ProvenanceDetails({ property: p }: { property: Property }) {
-  const info = describeProvenance(p);
+function ProvenanceDetails({ property: p, now }: { property: Property; now: Date }) {
+  const info = describeProvenance(p, now);
   return (
     <details className="mt-4 rounded-lg border border-line bg-surface px-4 py-3 text-sm">
       <summary className="cursor-pointer font-semibold text-midnight">About this property&apos;s data</summary>

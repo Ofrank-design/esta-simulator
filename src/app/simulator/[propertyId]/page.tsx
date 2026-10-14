@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { connection } from "next/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -50,7 +51,9 @@ async function SimulatorContent({ params, searchParams }: Props) {
   const property = getPropertyById(propertyId);
   if (!property) notFound();
   const { assumptions, notices } = parseAssumptionsDetailed(recordGetter(await searchParams), property);
-  return <SimulatorWorkspace key={property.id} property={property} initialAssumptions={assumptions} initialNotices={notices} />;
+  await connection(); // the clock is read per request, never while building
+  const asOf = new Date().toISOString().slice(0, 10);
+  return <SimulatorWorkspace key={property.id} property={property} initialAssumptions={assumptions} initialNotices={notices} asOf={asOf} />;
 }
 
 function SimulatorSkeleton() {

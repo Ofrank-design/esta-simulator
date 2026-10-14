@@ -139,6 +139,7 @@ test.describe("documents and exports", () => {
     await page.getByRole("link", { name: "Open printable report" }).click();
     const report = await popup;
     await report.waitForLoadState("networkidle");
+    await expect(report.locator("time").first()).toHaveAttribute("datetime", /^\d{4}-\d{2}-\d{2}T/);
     await expect(report.locator("body")).toContainText("70%");
     await expect(report.locator("body")).toContainText("Reinvested");
     await expect(report.locator("body")).toContainText("not a real listing");

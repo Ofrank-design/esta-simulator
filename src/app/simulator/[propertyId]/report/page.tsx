@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { connection } from "next/server";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { PROPERTIES, getPropertyById } from "@/lib/data/properties";
@@ -37,6 +38,8 @@ async function ReportContent({ params, searchParams }: Props) {
   if (!property) notFound();
   const { assumptions, notices } = parseAssumptionsDetailed(recordGetter(await searchParams), property);
   const result = projectInvestment(toProjectionInputs(property, assumptions));
+  await connection(); // the clock is read per request, never while building
+  const now = new Date();
   const q = encodeAssumptions(assumptions, property);
   return (
     <ReportView
@@ -44,6 +47,7 @@ async function ReportContent({ params, searchParams }: Props) {
       assumptions={assumptions}
       result={result}
       notices={notices}
+      now={now}
       backHref={`/simulator/${property.id}${q ? `?${q}` : ""}`}
     />
   );

@@ -42,6 +42,14 @@ jobs:
       - name: Production build
         run: npm run build
 
+      - name: Serve every route and check the server log
+        run: npm run check:routes
+
+      # Fails on known high severity problems in the code that ships to visitors. Development tools are
+      # excluded on purpose: they never reach the site, and forced upgrades there can break the build.
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
+
       - name: Keep the build for the browser tests
         uses: actions/upload-artifact@v4
         with:
