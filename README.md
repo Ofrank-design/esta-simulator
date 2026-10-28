@@ -277,68 +277,7 @@ The current comparison URL carries the property, investment amount, and distribu
 
 The current app does not require a database, authentication provider, payment provider, AI API key, or external property-data API to run.
 
-## Getting started
 
-### Requirements
-
-- Node.js 20.9 or later.
-- npm (the repository includes `package-lock.json`).
-- Git, if you plan to clone and contribute.
-
-### 1. Clone the repository
-
-```bash
-git clone <your-repository-url>
-cd esta
-```
-
-Replace `<your-repository-url>` with the URL of your GitHub repository.
-
-### 2. Install dependencies
-
-```bash
-npm ci
-```
-
-If you are intentionally changing dependency versions, use `npm install` and commit the resulting lockfile update. For repeatable installs and CI, prefer `npm ci`.
-
-### 3. Start the development server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000).
-
-No `.env` file is required for the current client-side application.
-
-## Available scripts
-
-| Command | Purpose |
-|---|---|
-| `npm run dev` | Start the Next.js development server |
-| `npm run build` | Create a production build |
-| `npm run start` | Start the production server after a successful build |
-| `npm run lint` | Run ESLint |
-| `npm test` | Run the Vitest test suite once |
-| `npm run typecheck` | Run TypeScript without emitting files |
-
-Before publishing a release, run the full verification sequence:
-
-```bash
-npm ci
-npm run typecheck
-npm run lint
-npm test
-npm run build
-npm run start
-```
-
-Then smoke-test the homepage, a known simulator URL, the comparison page, and an unknown property URL in a browser. A successful TypeScript check alone does not prove the production application works.
-
-> **Verification note:** the source archive used to write this README has not yet been confirmed to pass a clean install, test run, lint, typecheck, and production build in a fresh environment. Run the commands above before advertising the release as build-verified.
-
-## Project structure
 
 ```text
 esta/
