@@ -465,6 +465,3 @@ Contributions and thoughtful issue reports are welcome. When proposing a change:
 
 ESTA is for education and scenario exploration only. Outputs are mathematical results derived from user-entered assumptions and illustrative property records. Actual property performance can differ significantly. The application does not provide investment, legal, accounting, or tax advice and does not offer or facilitate the purchase of any property or ownership interest.
 
-## License
-
-No license file was included in the supplied project archive. Add a `LICENSE` file before presenting the repository as open source. Until a license is added, do not assume others have permission to redistribute or reuse the code.
